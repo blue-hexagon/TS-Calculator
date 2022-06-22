@@ -1,6 +1,27 @@
-import HTMLFetcher from './html-fetcher.js';
-import { ButtonCollection } from './calculator-button.js';
-import wobble from './animate.js';
+"use strict";
+var HTMLFetcher = (function () {
+    function HTMLFetcher() {
+    }
+    HTMLFetcher.getExpression = function () {
+        return document.getElementById('expression');
+    };
+    HTMLFetcher.getExpressionText = function () {
+        return this.getExpression().textContent;
+    };
+    HTMLFetcher.setExpression = function (str) {
+        this.getExpression().textContent = str;
+    };
+    HTMLFetcher.getResult = function () {
+        return document.getElementById('result');
+    };
+    HTMLFetcher.getResultText = function () {
+        return this.getResult().textContent;
+    };
+    HTMLFetcher.setResult = function (str) {
+        this.getResult().textContent = str;
+    };
+    return HTMLFetcher;
+}());
 var FrontendMathParserExtension = (function () {
     function FrontendMathParserExtension() {
     }
@@ -37,9 +58,38 @@ var FrontendMathParserExtension = (function () {
     };
     return FrontendMathParserExtension;
 }());
+var CalculatorButtonType;
+(function (CalculatorButtonType) {
+    CalculatorButtonType["NUMBER"] = "[data-number]";
+    CalculatorButtonType["CONSTANT"] = "[data-constant]";
+    CalculatorButtonType["ACTION"] = "[data-action]";
+    CalculatorButtonType["SIMPLE_OPERATOR"] = "[data-simpleoperator]";
+    CalculatorButtonType["ADVANCED_OPERATOR"] = "[data-advancedoperator]";
+    CalculatorButtonType["COMPLEX_OPERATOR"] = "[data-complexoperator]";
+})(CalculatorButtonType || (CalculatorButtonType = {}));
+var CalculatorButton = (function () {
+    function CalculatorButton(name, xdata, value, display, shortcut, keytype, inputSwitchFunc) {
+        this.name = name;
+        this.xdata = xdata;
+        this.value = value;
+        this.display = display;
+        this.shortcut = shortcut;
+        this.keytype = keytype;
+        this.inputSwitch = inputSwitchFunc;
+    }
+    return CalculatorButton;
+}());
 var InputController = (function () {
     function InputController(cusorPosition) {
         if (cusorPosition === void 0) { cusorPosition = 0; }
+        this.buttonColors = {
+            Action: ['green', 'darkgreen'],
+            Special: ['purple', 'darkpurple'],
+            Number: ['blue', 'darkblue'],
+            BasicOperator: ['yellow', 'darkyellow'],
+            AdvancedOperator: ['orange', 'darkorange'],
+            ComplexOperator: ['cyan', 'darkcyan'],
+        };
         this.cursorPosition = cusorPosition;
     }
     InputController.populateHelpTableWithDOMElements = function () {
@@ -108,46 +158,12 @@ var InputController = (function () {
             }
         }
     };
+    InputController.ButtonAC = new CalculatorButton('All Clear', '[data-action-allclear]', 'ac', 'AC', ['Escape', 'Delete'], CalculatorButtonType.ACTION, function () {
+        HTMLFetcher.setExpression('0');
+        HTMLFetcher.setResult('0');
+    });
+    InputController.handles = new Array(InputController.ButtonAC);
     InputController.HANDLES = [
-        ButtonCollection.ButtonAC,
-        ButtonCollection.ButtonEquals,
-        ButtonCollection.ButtonOpenParentheses,
-        ButtonCollection.ButtonDecimal,
-        ButtonCollection.ButtonCloseParentheses,
-        ButtonCollection.ButtonNumberZero,
-        ButtonCollection.ButtonNumberOne,
-        ButtonCollection.ButtonNumberTwo,
-        ButtonCollection.ButtonNumberThree,
-        ButtonCollection.ButtonNumberFour,
-        ButtonCollection.ButtonNumberFive,
-        ButtonCollection.ButtonNumberSix,
-        ButtonCollection.ButtonNumberSeven,
-        ButtonCollection.ButtonNumberEight,
-        ButtonCollection.ButtonNumberNine,
-        ButtonCollection.ButtonAddition,
-        ButtonCollection.ButtonSubtraction,
-        ButtonCollection.ButtonDivision,
-        ButtonCollection.ButtonMultiplication,
-        ButtonCollection.ButtonPercentage,
-        ButtonCollection.ButtonBackspace,
-        ButtonCollection.ButtonLessThan,
-        ButtonCollection.ButtonGreaterThan,
-        ButtonCollection.ButtonLessThanOrEqual,
-        ButtonCollection.ButtonGreaterThanOrEqual,
-        ButtonCollection.ButtonPower,
-        ButtonCollection.ButtonNaturalLogarithm,
-        ButtonCollection.ButtonLogarithm,
-        ButtonCollection.ButtonFactorial,
-        ButtonCollection.ButtonSquareRoot,
-        ButtonCollection.ButtonCubicRoot,
-        ButtonCollection.ButtonNthRoot,
-        ButtonCollection.ButtonCosine,
-        ButtonCollection.ButtonSine,
-        ButtonCollection.ButtonTangent,
-        ButtonCollection.ButtonConstantE,
-        ButtonCollection.ButtonConstantPi,
-    ];
-    InputController.handles = [
         {
             name: 'All Clear', xdata: '[data-action-allclear]', value: 'ac', display: 'AC', shortcut: ['Escape', 'Delete'],
         },
@@ -282,6 +298,19 @@ document.body.addEventListener('keydown', function (e) {
     console.info("Pressed: ".concat(e.key));
     inputSwitch(e.key);
 }, false);
+function wobble(selector) {
+    var el = document.querySelector(selector);
+    if (el === null && el === undefined) {
+        throw Error('Document query returned null or undefined when it should have returned a HTMLElement');
+    }
+    el.animate([
+        { transform: 'translate(0px, 0px)', backgroundColor: 'white' },
+        { transform: 'translate(0px, 2px)' },
+        { transform: 'translate(0px, 0px)' },
+    ], {
+        duration: 180,
+    });
+}
 function inputSwitch(key) {
     var dataAttribute = inputController.getDataAttributeByCalcKeyLookup(key);
     if (dataAttribute !== null && dataAttribute !== undefined) {

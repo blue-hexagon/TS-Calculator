@@ -2,6 +2,10 @@ module.exports = {
     semi: false,
     trailingComma: 'all',
     singleQuote: true,
-    printWidth: 80, 
-    tabWidth: 2,
+    printWidth: 170, 
+    tabWidth: 4,
+    indentSize: 4,
+    bracketSpacing: true,
+    bracketSameLine: true,
+    
 };
