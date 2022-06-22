@@ -1,13 +1,5 @@
 import HTMLFetcher from './html-fetcher.js';
-var ButtonType;
-(function (ButtonType) {
-    ButtonType["NUMBER"] = "[data-number]";
-    ButtonType["CONSTANT"] = "[data-constant]";
-    ButtonType["ACTION"] = "[data-action]";
-    ButtonType["SIMPLE_OPERATOR"] = "[data-simpleoperator]";
-    ButtonType["ADVANCED_OPERATOR"] = "[data-advancedoperator]";
-    ButtonType["COMPLEX_OPERATOR"] = "[data-complexoperator]";
-})(ButtonType || (ButtonType = {}));
+import FrontendMathParserExtension from './frontend-mathparser-extension.js';
 var ButtonColor = (function () {
     function ButtonColor() {
         this.buttonColors = {
@@ -34,7 +26,14 @@ var Button = (function () {
     }
     return Button;
 }());
-export { Button };
+function numberInput() {
+    if (!FrontendMathParserExtension.checkForNullExpression()) {
+        HTMLFetcher.getExpression().append(key);
+    }
+    else {
+        HTMLFetcher.setExpression(key);
+    }
+}
 var ButtonCollection = (function () {
     function ButtonCollection() {
     }
@@ -44,7 +43,7 @@ var ButtonCollection = (function () {
         value: 'ac',
         display: 'AC',
         shortcut: ['Escape', 'Delete'],
-        keytype: ButtonType.ACTION,
+        keytype: "[data-action]",
         funcHandler: function () {
             HTMLFetcher.setExpression('0');
             HTMLFetcher.setResult('0');
@@ -56,8 +55,9 @@ var ButtonCollection = (function () {
         value: '=',
         display: '=',
         shortcut: ['=', 'Enter'],
-        keytype: ButtonType.ACTION,
+        keytype: "[data-action]",
         funcHandler: function () {
+            FrontendMathParserExtension.evaluateExpression();
         },
     });
     ButtonCollection.ButtonOpenParentheses = new Button({
@@ -66,8 +66,14 @@ var ButtonCollection = (function () {
         value: '(',
         display: '(',
         shortcut: ['('],
-        keytype: ButtonType.ADVANCED_OPERATOR,
+        keytype: "[data-advancedoperator]",
         funcHandler: function () {
+            if (FrontendMathParserExtension.checkForNullExpression()) {
+                HTMLFetcher.setExpression('(');
+            }
+            else {
+                HTMLFetcher.getExpression().append('(');
+            }
         },
     });
     ButtonCollection.ButtonDecimal = new Button({
@@ -76,8 +82,13 @@ var ButtonCollection = (function () {
         value: '.',
         display: '.',
         shortcut: ['.', ','],
-        keytype: ButtonType.SIMPLE_OPERATOR,
+        keytype: "[data-simpleoperator]",
         funcHandler: function () {
+            if (HTMLFetcher.getExpressionText().includes('.') || FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '.')) {
+            }
+            else {
+                HTMLFetcher.getExpression().append('.');
+            }
         },
     });
     ButtonCollection.ButtonCloseParentheses = new Button({
@@ -86,8 +97,11 @@ var ButtonCollection = (function () {
         value: ')',
         display: ')',
         shortcut: [')'],
-        keytype: ButtonType.ADVANCED_OPERATOR,
+        keytype: "[data-advancedoperator]",
         funcHandler: function () {
+            if (FrontendMathParserExtension.checkClosingParenthesesIsAllowed(HTMLFetcher.getExpressionText())) {
+                HTMLFetcher.getExpression().append(')');
+            }
         },
     });
     ButtonCollection.ButtonNumberZero = new Button({
@@ -96,8 +110,9 @@ var ButtonCollection = (function () {
         value: '0',
         display: '0',
         shortcut: ['0'],
-        keytype: ButtonType.NUMBER,
+        keytype: "[data-number]",
         funcHandler: function () {
+            numberInput();
         },
     });
     ButtonCollection.ButtonNumberOne = new Button({
@@ -106,8 +121,9 @@ var ButtonCollection = (function () {
         value: '1',
         display: '1',
         shortcut: ['1'],
-        keytype: ButtonType.NUMBER,
+        keytype: "[data-number]",
         funcHandler: function () {
+            numberInput();
         },
     });
     ButtonCollection.ButtonNumberTwo = new Button({
@@ -116,8 +132,9 @@ var ButtonCollection = (function () {
         value: '2',
         display: '2',
         shortcut: ['2'],
-        keytype: ButtonType.NUMBER,
+        keytype: "[data-number]",
         funcHandler: function () {
+            numberInput();
         },
     });
     ButtonCollection.ButtonNumberThree = new Button({
@@ -126,8 +143,9 @@ var ButtonCollection = (function () {
         value: '3',
         display: '3',
         shortcut: ['3'],
-        keytype: ButtonType.NUMBER,
+        keytype: "[data-number]",
         funcHandler: function () {
+            numberInput();
         },
     });
     ButtonCollection.ButtonNumberFour = new Button({
@@ -136,8 +154,9 @@ var ButtonCollection = (function () {
         value: '4',
         display: '4',
         shortcut: ['4'],
-        keytype: ButtonType.NUMBER,
+        keytype: "[data-number]",
         funcHandler: function () {
+            numberInput();
         },
     });
     ButtonCollection.ButtonNumberFive = new Button({
@@ -146,8 +165,9 @@ var ButtonCollection = (function () {
         value: '5',
         display: '5',
         shortcut: ['5'],
-        keytype: ButtonType.NUMBER,
+        keytype: "[data-number]",
         funcHandler: function () {
+            numberInput();
         },
     });
     ButtonCollection.ButtonNumberSix = new Button({
@@ -156,8 +176,9 @@ var ButtonCollection = (function () {
         value: '6',
         display: '6',
         shortcut: ['6'],
-        keytype: ButtonType.NUMBER,
+        keytype: "[data-number]",
         funcHandler: function () {
+            numberInput();
         },
     });
     ButtonCollection.ButtonNumberSeven = new Button({
@@ -166,8 +187,9 @@ var ButtonCollection = (function () {
         value: '7',
         display: '7',
         shortcut: ['7'],
-        keytype: ButtonType.NUMBER,
+        keytype: "[data-number]",
         funcHandler: function () {
+            numberInput();
         },
     });
     ButtonCollection.ButtonNumberEight = new Button({
@@ -176,8 +198,9 @@ var ButtonCollection = (function () {
         value: '8',
         display: '8',
         shortcut: ['8'],
-        keytype: ButtonType.NUMBER,
+        keytype: "[data-number]",
         funcHandler: function () {
+            numberInput();
         },
     });
     ButtonCollection.ButtonNumberNine = new Button({
@@ -186,8 +209,9 @@ var ButtonCollection = (function () {
         value: '9',
         display: '9',
         shortcut: ['9'],
-        keytype: ButtonType.NUMBER,
+        keytype: "[data-number]",
         funcHandler: function () {
+            numberInput();
         },
     });
     ButtonCollection.ButtonAddition = new Button({
@@ -196,8 +220,11 @@ var ButtonCollection = (function () {
         value: '+',
         display: '+',
         shortcut: ['+'],
-        keytype: ButtonType.SIMPLE_OPERATOR,
+        keytype: "[data-simpleoperator]",
         funcHandler: function () {
+            if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '+')) {
+                HTMLFetcher.getExpression().append('+');
+            }
         },
     });
     ButtonCollection.ButtonSubtraction = new Button({
@@ -206,8 +233,16 @@ var ButtonCollection = (function () {
         value: '-',
         display: '-',
         shortcut: ['-'],
-        keytype: ButtonType.SIMPLE_OPERATOR,
+        keytype: "[data-simpleoperator]",
         funcHandler: function () {
+            if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '-')) {
+                if (FrontendMathParserExtension.checkForNullExpression()) {
+                    HTMLFetcher.setExpression('-');
+                }
+                else {
+                    HTMLFetcher.getExpression().append('-');
+                }
+            }
         },
     });
     ButtonCollection.ButtonDivision = new Button({
@@ -216,8 +251,11 @@ var ButtonCollection = (function () {
         value: '/',
         display: '/',
         shortcut: ['/'],
-        keytype: ButtonType.SIMPLE_OPERATOR,
+        keytype: "[data-simpleoperator]",
         funcHandler: function () {
+            if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '/')) {
+                HTMLFetcher.getExpression().append('/');
+            }
         },
     });
     ButtonCollection.ButtonMultiplication = new Button({
@@ -226,8 +264,11 @@ var ButtonCollection = (function () {
         value: '*',
         display: '*',
         shortcut: ['*'],
-        keytype: ButtonType.SIMPLE_OPERATOR,
+        keytype: "[data-simpleoperator]",
         funcHandler: function () {
+            if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '*')) {
+                HTMLFetcher.getExpression().append('*');
+            }
         },
     });
     ButtonCollection.ButtonPercentage = new Button({
@@ -236,8 +277,11 @@ var ButtonCollection = (function () {
         value: '%',
         display: '&percnt;',
         shortcut: ['p'],
-        keytype: ButtonType.SIMPLE_OPERATOR,
+        keytype: "[data-simpleoperator]",
         funcHandler: function () {
+            if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '%')) {
+                HTMLFetcher.getExpression().append('%');
+            }
         },
     });
     ButtonCollection.ButtonBackspace = new Button({
@@ -246,8 +290,9 @@ var ButtonCollection = (function () {
         value: 'Backspace',
         display: 'C',
         shortcut: ['Backspace', 'c'],
-        keytype: ButtonType.ACTION,
+        keytype: "[data-action]",
         funcHandler: function () {
+            HTMLFetcher.setExpression(HTMLFetcher.getExpressionText().slice(0, -1));
         },
     });
     ButtonCollection.ButtonLessThan = new Button({
@@ -256,8 +301,9 @@ var ButtonCollection = (function () {
         value: '<',
         display: '&lt;',
         shortcut: ['<'],
-        keytype: ButtonType.ADVANCED_OPERATOR,
+        keytype: "[data-advancedoperator]",
         funcHandler: function () {
+            HTMLFetcher.getExpression().append('<');
         },
     });
     ButtonCollection.ButtonGreaterThan = new Button({
@@ -266,8 +312,9 @@ var ButtonCollection = (function () {
         value: '>',
         display: '&gt;',
         shortcut: ['>'],
-        keytype: ButtonType.ADVANCED_OPERATOR,
+        keytype: "[data-advancedoperator]",
         funcHandler: function () {
+            HTMLFetcher.getExpression().append('>');
         },
     });
     ButtonCollection.ButtonLessThanOrEqual = new Button({
@@ -276,8 +323,9 @@ var ButtonCollection = (function () {
         value: '<=',
         display: '&le;',
         shortcut: [],
-        keytype: ButtonType.ADVANCED_OPERATOR,
+        keytype: "[data-advancedoperator]",
         funcHandler: function () {
+            HTMLFetcher.getExpression().append('<=');
         },
     });
     ButtonCollection.ButtonGreaterThanOrEqual = new Button({
@@ -286,8 +334,9 @@ var ButtonCollection = (function () {
         value: '>=',
         display: '&ge;',
         shortcut: [],
-        keytype: ButtonType.ADVANCED_OPERATOR,
+        keytype: "[data-advancedoperator]",
         funcHandler: function () {
+            HTMLFetcher.getExpression().append('>=');
         },
     });
     ButtonCollection.ButtonPower = new Button({
@@ -296,8 +345,11 @@ var ButtonCollection = (function () {
         value: '^',
         display: 'x<sup>y</sup>',
         shortcut: ['Dead', '^'],
-        keytype: ButtonType.ADVANCED_OPERATOR,
+        keytype: "[data-advancedoperator]",
         funcHandler: function () {
+            if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '^')) {
+                HTMLFetcher.getExpression().append('^');
+            }
         },
     });
     ButtonCollection.ButtonNaturalLogarithm = new Button({
@@ -306,8 +358,14 @@ var ButtonCollection = (function () {
         value: 'ln',
         display: 'Ln',
         shortcut: ['L'],
-        keytype: ButtonType.COMPLEX_OPERATOR,
+        keytype: "[data-complexoperator]",
         funcHandler: function () {
+            if (!FrontendMathParserExtension.checkForNullExpression()) {
+                HTMLFetcher.setExpression("ln(".concat(HTMLFetcher.getExpressionText(), ")"));
+            }
+            else {
+                HTMLFetcher.setExpression('ln(');
+            }
         },
     });
     ButtonCollection.ButtonLogarithm = new Button({
@@ -316,8 +374,14 @@ var ButtonCollection = (function () {
         value: 'log',
         display: 'log',
         shortcut: ['l'],
-        keytype: ButtonType.COMPLEX_OPERATOR,
+        keytype: "[data-complexoperator]",
         funcHandler: function () {
+            if (!FrontendMathParserExtension.checkForNullExpression()) {
+                HTMLFetcher.setExpression("log(".concat(HTMLFetcher.getExpressionText(), ")"));
+            }
+            else {
+                HTMLFetcher.setExpression('log(');
+            }
         },
     });
     ButtonCollection.ButtonFactorial = new Button({
@@ -326,8 +390,9 @@ var ButtonCollection = (function () {
         value: '!',
         display: 'x!',
         shortcut: ['!'],
-        keytype: ButtonType.COMPLEX_OPERATOR,
+        keytype: "[data-complexoperator]",
         funcHandler: function () {
+            HTMLFetcher.getExpression().append('!');
         },
     });
     ButtonCollection.ButtonSquareRoot = new Button({
@@ -336,8 +401,14 @@ var ButtonCollection = (function () {
         value: 'sqrt',
         display: '&radic;',
         shortcut: ['r'],
-        keytype: ButtonType.COMPLEX_OPERATOR,
+        keytype: "[data-complexoperator]",
         funcHandler: function () {
+            if (!FrontendMathParserExtension.checkForNullExpression()) {
+                HTMLFetcher.setExpression("sqrt(".concat(HTMLFetcher.getExpressionText(), ")"));
+            }
+            else {
+                HTMLFetcher.setExpression('sqrt(');
+            }
         },
     });
     ButtonCollection.ButtonCubicRoot = new Button({
@@ -346,7 +417,7 @@ var ButtonCollection = (function () {
         value: '',
         display: 'Cbrt',
         shortcut: [],
-        keytype: ButtonType.COMPLEX_OPERATOR,
+        keytype: "[data-complexoperator]",
         funcHandler: function () {
         },
     });
@@ -356,7 +427,7 @@ var ButtonCollection = (function () {
         value: '',
         display: 'NthRt',
         shortcut: [],
-        keytype: ButtonType.COMPLEX_OPERATOR,
+        keytype: "[data-complexoperator]",
         funcHandler: function () {
         },
     });
@@ -366,8 +437,14 @@ var ButtonCollection = (function () {
         value: 'cos',
         display: 'cos',
         shortcut: ['c'],
-        keytype: ButtonType.COMPLEX_OPERATOR,
+        keytype: "[data-complexoperator]",
         funcHandler: function () {
+            if (!FrontendMathParserExtension.checkForNullExpression()) {
+                HTMLFetcher.setExpression("cos(".concat(HTMLFetcher.getExpressionText(), ")"));
+            }
+            else {
+                HTMLFetcher.setExpression('cos(');
+            }
         },
     });
     ButtonCollection.ButtonSine = new Button({
@@ -376,8 +453,14 @@ var ButtonCollection = (function () {
         value: 'sin',
         display: 'sin',
         shortcut: ['s'],
-        keytype: ButtonType.COMPLEX_OPERATOR,
+        keytype: "[data-complexoperator]",
         funcHandler: function () {
+            if (!FrontendMathParserExtension.checkForNullExpression()) {
+                HTMLFetcher.setExpression("sin(".concat(HTMLFetcher.getExpressionText(), ")"));
+            }
+            else {
+                HTMLFetcher.setExpression('sin(');
+            }
         },
     });
     ButtonCollection.ButtonTangent = new Button({
@@ -386,8 +469,14 @@ var ButtonCollection = (function () {
         value: 'tan',
         display: 'tan',
         shortcut: ['t'],
-        keytype: ButtonType.COMPLEX_OPERATOR,
+        keytype: "[data-complexoperator]",
         funcHandler: function () {
+            if (!FrontendMathParserExtension.checkForNullExpression()) {
+                HTMLFetcher.setExpression("tan(".concat(HTMLFetcher.getExpressionText(), ")"));
+            }
+            else {
+                HTMLFetcher.setExpression('tan(');
+            }
         },
     });
     ButtonCollection.ButtonConstantE = new Button({
@@ -396,8 +485,9 @@ var ButtonCollection = (function () {
         value: 'e',
         display: 'e',
         shortcut: ['E'],
-        keytype: ButtonType.CONSTANT,
+        keytype: "[data-constant]",
         funcHandler: function () {
+            HTMLFetcher.getExpression().append('e');
         },
     });
     ButtonCollection.ButtonConstantPi = new Button({
@@ -406,10 +496,11 @@ var ButtonCollection = (function () {
         value: 'pi',
         display: '&pi;',
         shortcut: ['P'],
-        keytype: ButtonType.CONSTANT,
+        keytype: "[data-constant]",
         funcHandler: function () {
+            HTMLFetcher.getExpression().append('pi');
         },
     });
     return ButtonCollection;
 }());
-export { ButtonCollection };
+export default ButtonCollection;

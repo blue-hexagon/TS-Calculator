@@ -1,7 +1,8 @@
 /* eslint-disable max-classes-per-file */
 import HTMLFetcher from './html-fetcher.js';
+import FrontendMathParserExtension from './frontend-mathparser-extension.js';
 
-enum ButtonType {
+const enum ButtonType {
     NUMBER = '[data-number]',
     CONSTANT = '[data-constant]',
     ACTION = '[data-action]',
@@ -28,7 +29,7 @@ interface ButtonInterface {
     keytype: ButtonType;
     funcHandler: CallableFunction;
 }
-export class Button {
+class Button {
     public name: string;
 
     public xdata: string;
@@ -55,7 +56,15 @@ export class Button {
         this.funcHandler = funcHandler;
     }
 }
-export class ButtonCollection {
+function numberInput() {
+    /** Used numerous times for single digits numbers */
+    if (!FrontendMathParserExtension.checkForNullExpression()) {
+        HTMLFetcher.getExpression().append(key);
+    } else {
+        HTMLFetcher.setExpression(key);
+    }
+}
+export default class ButtonCollection {
     public static ButtonAC = new Button({
         name: 'All Clear',
         xdata: '[data-action-allclear]',
@@ -77,7 +86,7 @@ export class ButtonCollection {
         shortcut: ['=', 'Enter'],
         keytype: ButtonType.ACTION,
         funcHandler: () => {
-
+            FrontendMathParserExtension.evaluateExpression();
         },
     });
 
@@ -89,7 +98,11 @@ export class ButtonCollection {
         shortcut: ['('],
         keytype: ButtonType.ADVANCED_OPERATOR,
         funcHandler: () => {
-
+            if (FrontendMathParserExtension.checkForNullExpression()) {
+                HTMLFetcher.setExpression('(');
+            } else {
+                HTMLFetcher.getExpression().append('(');
+            }
         },
     });
 
@@ -101,7 +114,12 @@ export class ButtonCollection {
         shortcut: ['.', ','],
         keytype: ButtonType.SIMPLE_OPERATOR,
         funcHandler: () => {
+            // eslint-disable-next-line no-empty
+            if (HTMLFetcher.getExpressionText().includes('.') || FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '.')) {
 
+            } else {
+                HTMLFetcher.getExpression().append('.');
+            }
         },
     });
 
@@ -113,7 +131,9 @@ export class ButtonCollection {
         shortcut: [')'],
         keytype: ButtonType.ADVANCED_OPERATOR,
         funcHandler: () => {
-
+            if (FrontendMathParserExtension.checkClosingParenthesesIsAllowed(HTMLFetcher.getExpressionText())) {
+                HTMLFetcher.getExpression().append(')');
+            }
         },
     });
 
@@ -125,7 +145,7 @@ export class ButtonCollection {
         shortcut: ['0'],
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
-
+            numberInput();
         },
     });
 
@@ -137,7 +157,7 @@ export class ButtonCollection {
         shortcut: ['1'],
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
-
+            numberInput();
         },
     });
 
@@ -149,7 +169,7 @@ export class ButtonCollection {
         shortcut: ['2'],
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
-
+            numberInput();
         },
     });
 
@@ -161,7 +181,7 @@ export class ButtonCollection {
         shortcut: ['3'],
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
-
+            numberInput();
         },
     });
 
@@ -173,7 +193,7 @@ export class ButtonCollection {
         shortcut: ['4'],
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
-
+            numberInput();
         },
     });
 
@@ -185,7 +205,7 @@ export class ButtonCollection {
         shortcut: ['5'],
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
-
+            numberInput();
         },
     });
 
@@ -197,7 +217,7 @@ export class ButtonCollection {
         shortcut: ['6'],
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
-
+            numberInput();
         },
     });
 
@@ -209,7 +229,7 @@ export class ButtonCollection {
         shortcut: ['7'],
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
-
+            numberInput();
         },
     });
 
@@ -221,7 +241,7 @@ export class ButtonCollection {
         shortcut: ['8'],
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
-
+            numberInput();
         },
     });
 
@@ -233,7 +253,7 @@ export class ButtonCollection {
         shortcut: ['9'],
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
-
+            numberInput();
         },
     });
 
@@ -245,6 +265,10 @@ export class ButtonCollection {
         shortcut: ['+'],
         keytype: ButtonType.SIMPLE_OPERATOR,
         funcHandler: () => {
+            // TODO: See todo-multiply
+            if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '+')) {
+                HTMLFetcher.getExpression().append('+');
+            }
         },
     });
 
@@ -256,6 +280,14 @@ export class ButtonCollection {
         shortcut: ['-'],
         keytype: ButtonType.SIMPLE_OPERATOR,
         funcHandler: () => {
+            // TODO: after minus, only numbers allowed
+            if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '-')) {
+                if (FrontendMathParserExtension.checkForNullExpression()) {
+                    HTMLFetcher.setExpression('-');
+                } else {
+                    HTMLFetcher.getExpression().append('-');
+                }
+            }
         },
     });
 
@@ -267,6 +299,10 @@ export class ButtonCollection {
         shortcut: ['/'],
         keytype: ButtonType.SIMPLE_OPERATOR,
         funcHandler: () => {
+            // TODO: See todo-multiply
+            if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '/')) {
+                HTMLFetcher.getExpression().append('/');
+            }
         },
     });
 
@@ -278,6 +314,10 @@ export class ButtonCollection {
         shortcut: ['*'],
         keytype: ButtonType.SIMPLE_OPERATOR,
         funcHandler: () => {
+            // TODO: After multiply, only number or minus if times, divide or +, replace multiply sign
+            if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '*')) {
+                HTMLFetcher.getExpression().append('*');
+            }
         },
     });
 
@@ -289,6 +329,9 @@ export class ButtonCollection {
         shortcut: ['p'],
         keytype: ButtonType.SIMPLE_OPERATOR,
         funcHandler: () => {
+            if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '%')) {
+                HTMLFetcher.getExpression().append('%');
+            }
         },
     });
 
@@ -300,6 +343,7 @@ export class ButtonCollection {
         shortcut: ['Backspace', 'c'],
         keytype: ButtonType.ACTION,
         funcHandler: () => {
+            HTMLFetcher.setExpression(HTMLFetcher.getExpressionText().slice(0, -1));
         },
     });
 
@@ -311,6 +355,7 @@ export class ButtonCollection {
         shortcut: ['<'],
         keytype: ButtonType.ADVANCED_OPERATOR,
         funcHandler: () => {
+            HTMLFetcher.getExpression().append('<');
         },
     });
 
@@ -322,6 +367,7 @@ export class ButtonCollection {
         shortcut: ['>'],
         keytype: ButtonType.ADVANCED_OPERATOR,
         funcHandler: () => {
+            HTMLFetcher.getExpression().append('>');
         },
     });
 
@@ -333,6 +379,7 @@ export class ButtonCollection {
         shortcut: [],
         keytype: ButtonType.ADVANCED_OPERATOR,
         funcHandler: () => {
+            HTMLFetcher.getExpression().append('<=');
         },
     });
 
@@ -344,6 +391,7 @@ export class ButtonCollection {
         shortcut: [],
         keytype: ButtonType.ADVANCED_OPERATOR,
         funcHandler: () => {
+            HTMLFetcher.getExpression().append('>=');
         },
     });
 
@@ -355,6 +403,9 @@ export class ButtonCollection {
         shortcut: ['Dead', '^'],
         keytype: ButtonType.ADVANCED_OPERATOR,
         funcHandler: () => {
+            if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '^')) {
+                HTMLFetcher.getExpression().append('^');
+            }
         },
     });
 
@@ -366,6 +417,11 @@ export class ButtonCollection {
         shortcut: ['L'],
         keytype: ButtonType.COMPLEX_OPERATOR,
         funcHandler: () => {
+            if (!FrontendMathParserExtension.checkForNullExpression()) {
+                HTMLFetcher.setExpression(`ln(${HTMLFetcher.getExpressionText()})`);
+            } else {
+                HTMLFetcher.setExpression('ln(');
+            }
         },
     });
 
@@ -377,6 +433,11 @@ export class ButtonCollection {
         shortcut: ['l'],
         keytype: ButtonType.COMPLEX_OPERATOR,
         funcHandler: () => {
+            if (!FrontendMathParserExtension.checkForNullExpression()) {
+                HTMLFetcher.setExpression(`log(${HTMLFetcher.getExpressionText()})`);
+            } else {
+                HTMLFetcher.setExpression('log(');
+            }
         },
     });
 
@@ -388,6 +449,7 @@ export class ButtonCollection {
         shortcut: ['!'],
         keytype: ButtonType.COMPLEX_OPERATOR,
         funcHandler: () => {
+            HTMLFetcher.getExpression().append('!');
         },
     });
 
@@ -399,6 +461,11 @@ export class ButtonCollection {
         shortcut: ['r'],
         keytype: ButtonType.COMPLEX_OPERATOR,
         funcHandler: () => {
+            if (!FrontendMathParserExtension.checkForNullExpression()) {
+                HTMLFetcher.setExpression(`sqrt(${HTMLFetcher.getExpressionText()})`);
+            } else {
+                HTMLFetcher.setExpression('sqrt(');
+            }
         },
     });
 
@@ -432,6 +499,11 @@ export class ButtonCollection {
         shortcut: ['c'],
         keytype: ButtonType.COMPLEX_OPERATOR,
         funcHandler: () => {
+            if (!FrontendMathParserExtension.checkForNullExpression()) {
+                HTMLFetcher.setExpression(`cos(${HTMLFetcher.getExpressionText()})`);
+            } else {
+                HTMLFetcher.setExpression('cos(');
+            }
         },
     });
 
@@ -443,6 +515,11 @@ export class ButtonCollection {
         shortcut: ['s'],
         keytype: ButtonType.COMPLEX_OPERATOR,
         funcHandler: () => {
+            if (!FrontendMathParserExtension.checkForNullExpression()) {
+                HTMLFetcher.setExpression(`sin(${HTMLFetcher.getExpressionText()})`);
+            } else {
+                HTMLFetcher.setExpression('sin(');
+            }
         },
     });
 
@@ -454,6 +531,11 @@ export class ButtonCollection {
         shortcut: ['t'],
         keytype: ButtonType.COMPLEX_OPERATOR,
         funcHandler: () => {
+            if (!FrontendMathParserExtension.checkForNullExpression()) {
+                HTMLFetcher.setExpression(`tan(${HTMLFetcher.getExpressionText()})`);
+            } else {
+                HTMLFetcher.setExpression('tan(');
+            }
         },
     });
 
@@ -465,6 +547,7 @@ export class ButtonCollection {
         shortcut: ['E'],
         keytype: ButtonType.CONSTANT,
         funcHandler: () => {
+            HTMLFetcher.getExpression().append('e');
         },
     });
 
@@ -476,6 +559,7 @@ export class ButtonCollection {
         shortcut: ['P'],
         keytype: ButtonType.CONSTANT,
         funcHandler: () => {
+            HTMLFetcher.getExpression().append('pi');
         },
     });
 }
