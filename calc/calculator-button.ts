@@ -67,7 +67,7 @@ function numberInput() {
 export default class ButtonCollection {
     public static ButtonAC = new Button({
         name: 'All Clear',
-        xdata: '[data-action-allclear]',
+        xdata: '[data-key-allclear]',
         value: 'ac',
         display: 'AC',
         shortcut: ['Escape', 'Delete'],
@@ -80,7 +80,7 @@ export default class ButtonCollection {
 
     public static ButtonEquals = new Button({
         name: 'Equals',
-        xdata: '[data-action-equals]',
+        xdata: '[data-key-equals]',
         value: '=',
         display: '=',
         shortcut: ['=', 'Enter'],
@@ -92,7 +92,7 @@ export default class ButtonCollection {
 
     public static ButtonOpenParentheses = new Button({
         name: 'Open Parentheses',
-        xdata: '[data-operator-openparentheses]',
+        xdata: '[data-key-openparentheses]',
         value: '(',
         display: '(',
         shortcut: ['('],
@@ -108,7 +108,7 @@ export default class ButtonCollection {
 
     public static ButtonDecimal = new Button({
         name: 'Decimal',
-        xdata: '[data-special-decimal]',
+        xdata: '[data-key-decimal]',
         value: '.',
         display: '.',
         shortcut: ['.', ','],
@@ -125,7 +125,7 @@ export default class ButtonCollection {
 
     public static ButtonCloseParentheses = new Button({
         name: 'Close Parentheses',
-        xdata: '[data-operator-closeparentheses]',
+        xdata: '[data-key-closeparentheses]',
         value: ')',
         display: ')',
         shortcut: [')'],
@@ -139,7 +139,7 @@ export default class ButtonCollection {
 
     public static ButtonNumberZero = new Button({
         name: 'Zero',
-        xdata: '[data-number-zero]',
+        xdata: '[data-key-zero]',
         value: '0',
         display: '0',
         shortcut: ['0'],
@@ -151,7 +151,7 @@ export default class ButtonCollection {
 
     public static ButtonNumberOne = new Button({
         name: 'One',
-        xdata: '[data-number-one]',
+        xdata: '[data-key-one]',
         value: '1',
         display: '1',
         shortcut: ['1'],
@@ -163,7 +163,7 @@ export default class ButtonCollection {
 
     public static ButtonNumberTwo = new Button({
         name: 'Two',
-        xdata: '[data-number-two]',
+        xdata: '[data-key-two]',
         value: '2',
         display: '2',
         shortcut: ['2'],
@@ -175,7 +175,7 @@ export default class ButtonCollection {
 
     public static ButtonNumberThree = new Button({
         name: 'Three',
-        xdata: '[data-number-three]',
+        xdata: '[data-key-three]',
         value: '3',
         display: '3',
         shortcut: ['3'],
@@ -187,7 +187,7 @@ export default class ButtonCollection {
 
     public static ButtonNumberFour = new Button({
         name: 'Four',
-        xdata: '[data-number-four]',
+        xdata: '[data-key-four]',
         value: '4',
         display: '4',
         shortcut: ['4'],
@@ -199,7 +199,7 @@ export default class ButtonCollection {
 
     public static ButtonNumberFive = new Button({
         name: 'Five',
-        xdata: '[data-number-five]',
+        xdata: '[data-key-five]',
         value: '5',
         display: '5',
         shortcut: ['5'],
@@ -211,7 +211,7 @@ export default class ButtonCollection {
 
     public static ButtonNumberSix = new Button({
         name: 'Six',
-        xdata: '[data-number-six]',
+        xdata: '[data-key-six]',
         value: '6',
         display: '6',
         shortcut: ['6'],
@@ -223,7 +223,7 @@ export default class ButtonCollection {
 
     public static ButtonNumberSeven = new Button({
         name: 'Seven',
-        xdata: '[data-number-seven]',
+        xdata: '[data-key-seven]',
         value: '7',
         display: '7',
         shortcut: ['7'],
@@ -235,7 +235,7 @@ export default class ButtonCollection {
 
     public static ButtonNumberEight = new Button({
         name: 'Eight',
-        xdata: '[data-number-eight]',
+        xdata: '[data-key-eight]',
         value: '8',
         display: '8',
         shortcut: ['8'],
@@ -247,7 +247,7 @@ export default class ButtonCollection {
 
     public static ButtonNumberNine = new Button({
         name: 'Nine',
-        xdata: '[data-number-nine]',
+        xdata: '[data-key-nine]',
         value: '9',
         display: '9',
         shortcut: ['9'],
@@ -259,7 +259,7 @@ export default class ButtonCollection {
 
     public static ButtonAddition = new Button({
         name: 'Plus',
-        xdata: '[data-operator-plus]',
+        xdata: '[data-key-plus]',
         value: '+',
         display: '+',
         shortcut: ['+'],
@@ -274,7 +274,7 @@ export default class ButtonCollection {
 
     public static ButtonSubtraction = new Button({
         name: 'Minus',
-        xdata: '[data-operator-minus]',
+        xdata: '[data-key-minus]',
         value: '-',
         display: '-',
         shortcut: ['-'],
@@ -293,7 +293,7 @@ export default class ButtonCollection {
 
     public static ButtonDivision = new Button({
         name: 'Divide',
-        xdata: '[data-operator-divide]',
+        xdata: '[data-key-divide]',
         value: '/',
         display: '/',
         shortcut: ['/'],
@@ -308,7 +308,7 @@ export default class ButtonCollection {
 
     public static ButtonMultiplication = new Button({
         name: 'Multiply',
-        xdata: '[data-operator-multiply]',
+        xdata: '[data-key-multiply]',
         value: '*',
         display: '*',
         shortcut: ['*'],
@@ -323,7 +323,7 @@ export default class ButtonCollection {
 
     public static ButtonPercentage = new Button({
         name: 'Percentage',
-        xdata: '[data-operator-percentage]',
+        xdata: '[data-key-percentage]',
         value: '%',
         display: '&percnt;',
         shortcut: ['p'],
@@ -337,7 +337,7 @@ export default class ButtonCollection {
 
     public static ButtonBackspace = new Button({
         name: 'Backspace',
-        xdata: '[data-action-backspace]',
+        xdata: '[data-key-backspace]',
         value: 'Backspace',
         display: 'C',
         shortcut: ['Backspace', 'c'],
@@ -349,7 +349,7 @@ export default class ButtonCollection {
 
     public static ButtonLessThan = new Button({
         name: 'Less Than',
-        xdata: '[data-operator-lt]',
+        xdata: '[data-key-lt]',
         value: '<',
         display: '&lt;',
         shortcut: ['<'],
@@ -361,7 +361,7 @@ export default class ButtonCollection {
 
     public static ButtonGreaterThan = new Button({
         name: 'Greater Than',
-        xdata: '[data-operator-gt]',
+        xdata: '[data-key-gt]',
         value: '>',
         display: '&gt;',
         shortcut: ['>'],
@@ -373,7 +373,7 @@ export default class ButtonCollection {
 
     public static ButtonLessThanOrEqual = new Button({
         name: 'Less Than or Equal',
-        xdata: '[data-operator-lteq]',
+        xdata: '[data-key-lteq]',
         value: '<=',
         display: '&le;',
         shortcut: [],
@@ -385,7 +385,7 @@ export default class ButtonCollection {
 
     public static ButtonGreaterThanOrEqual = new Button({
         name: 'Greater Than or Equal',
-        xdata: '[data-operator-gteq]',
+        xdata: '[data-key-gteq]',
         value: '>=',
         display: '&ge;',
         shortcut: [],
@@ -397,7 +397,7 @@ export default class ButtonCollection {
 
     public static ButtonPower = new Button({
         name: 'Power',
-        xdata: '[data-operator-power]',
+        xdata: '[data-key-power]',
         value: '^',
         display: 'x<sup>y</sup>',
         shortcut: ['Dead', '^'],
@@ -411,7 +411,7 @@ export default class ButtonCollection {
 
     public static ButtonNaturalLogarithm = new Button({
         name: 'Natural Logarithm',
-        xdata: '[data-operator-naturallog]',
+        xdata: '[data-key-naturallog]',
         value: 'ln',
         display: 'Ln',
         shortcut: ['L'],
@@ -427,7 +427,7 @@ export default class ButtonCollection {
 
     public static ButtonLogarithm = new Button({
         name: 'Logarithm',
-        xdata: '[data-operator-log]',
+        xdata: '[data-key-log]',
         value: 'log',
         display: 'log',
         shortcut: ['l'],
@@ -443,7 +443,7 @@ export default class ButtonCollection {
 
     public static ButtonFactorial = new Button({
         name: 'Factorial',
-        xdata: '[data-operator-factorial]',
+        xdata: '[data-key-factorial]',
         value: '!',
         display: 'x!',
         shortcut: ['!'],
@@ -455,7 +455,7 @@ export default class ButtonCollection {
 
     public static ButtonSquareRoot = new Button({
         name: 'Square Root',
-        xdata: '[data-operator-squareroot]',
+        xdata: '[data-key-squareroot]',
         value: 'sqrt',
         display: '&radic;',
         shortcut: ['r'],
@@ -471,7 +471,7 @@ export default class ButtonCollection {
 
     public static ButtonCubicRoot = new Button({
         name: 'Cubic Root',
-        xdata: '[data-operator-cuberoot]',
+        xdata: '[data-key-cuberoot]',
         value: '',
         display: 'Cbrt',
         shortcut: [],
@@ -482,7 +482,7 @@ export default class ButtonCollection {
 
     public static ButtonNthRoot = new Button({
         name: 'Nth Root',
-        xdata: '[data-operator-nthroot]',
+        xdata: '[data-key-nthroot]',
         value: '',
         display: 'NthRt',
         shortcut: [],
@@ -493,7 +493,7 @@ export default class ButtonCollection {
 
     public static ButtonCosine = new Button({
         name: 'Cosine',
-        xdata: '[data-operator-cosine]',
+        xdata: '[data-key-cosine]',
         value: 'cos',
         display: 'cos',
         shortcut: ['c'],
@@ -509,7 +509,7 @@ export default class ButtonCollection {
 
     public static ButtonSine = new Button({
         name: 'Sinus',
-        xdata: '[data-operator-sine]',
+        xdata: '[data-key-sine]',
         value: 'sin',
         display: 'sin',
         shortcut: ['s'],
@@ -525,7 +525,7 @@ export default class ButtonCollection {
 
     public static ButtonTangent = new Button({
         name: 'Tangent',
-        xdata: '[data-operator-tangent]',
+        xdata: '[data-key-tangent]',
         value: 'tan',
         display: 'tan',
         shortcut: ['t'],
@@ -541,7 +541,7 @@ export default class ButtonCollection {
 
     public static ButtonConstantE = new Button({
         name: 'e',
-        xdata: '[data-operator-e]',
+        xdata: '[data-key-e]',
         value: 'e',
         display: 'e',
         shortcut: ['E'],
@@ -553,7 +553,7 @@ export default class ButtonCollection {
 
     public static ButtonConstantPi = new Button({
         name: 'Pi',
-        xdata: '[data-operator-pi]',
+        xdata: '[data-key-pi]',
         value: 'pi',
         display: '&pi;',
         shortcut: ['P'],
@@ -576,10 +576,10 @@ export default class ButtonCollection {
     });
  */
 /**
-{ name: "Cosine", xdata: '[data-operator-cosine]', value: 'cos', display: "cos", shortcut: ["C"] },
-{ name: "Sinus", xdata: '[data-operator-sine]', value: 'sin', display: "sin", shortcut: ["S"] },
-{ name: "Tangent", xdata: '[data-operator-tangent]', value: 'tan', display: "tan", shortcut: ["T"] },
-{ name: "Cosine", xdata: '[data-operator-cosine]', value: 'cos', display: "cos", shortcut: ["C"] },
-{ name: "Sinus", xdata: '[data-operator-sine]', value: 'sin', display: "sin", shortcut: ["S"] },
-{ name: "Tangent", xdata: '[data-operator-tangent]', value: 'tan', display: "tan", shortcut: ["T"] },
+{ name: "Cosine", xdata: '[data-key-cosine]', value: 'cos', display: "cos", shortcut: ["C"] },
+{ name: "Sinus", xdata: '[data-key-sine]', value: 'sin', display: "sin", shortcut: ["S"] },
+{ name: "Tangent", xdata: '[data-key-tangent]', value: 'tan', display: "tan", shortcut: ["T"] },
+{ name: "Cosine", xdata: '[data-key-cosine]', value: 'cos', display: "cos", shortcut: ["C"] },
+{ name: "Sinus", xdata: '[data-key-sine]', value: 'sin', display: "sin", shortcut: ["S"] },
+{ name: "Tangent", xdata: '[data-key-tangent]', value: 'tan', display: "tan", shortcut: ["T"] },
 */
