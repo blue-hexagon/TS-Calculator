@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
-import HTMLFetcher from './html-fetcher.js';
-import FrontendMathParserExtension from './frontend-mathparser-extension.js';
+import HTMLFetcher from './html-fetcher.js'
+import FrontendMathParserExtension from './frontend-mathparser-extension.js'
 
 const enum ButtonType {
     NUMBER = '[data-number]',
@@ -11,60 +11,58 @@ const enum ButtonType {
     COMPLEX_OPERATOR = '[data-complexoperator]',
 }
 class ButtonColor {
-    buttonColors: { [buttonType: string]: [bgColor: string, hoverBgColor: string], } = {
+    buttonColors: { [buttonType: string]: [bgColor: string, hoverBgColor: string] } = {
         NUMBER: ['blue', 'darkblue'],
         CONSTANT: ['purple', 'darkpurple'],
         ACTION: ['green', 'darkgreen'],
         SIMPLE_OPERATOR: ['yellow', 'darkyellow'],
         ADVANCED_OPERATOR: ['orange', 'darkorange'],
         COMPLEX_OPERATOR: ['cyan', 'darkcyan'],
-    };
-}
-interface ButtonInterface {
-    name: string;
-    xdata: string;
-    value: string;
-    display: string;
-    shortcut: string[];
-    keytype: ButtonType;
-    funcHandler: CallableFunction;
-}
-class Button {
-    public name: string;
-
-    public xdata: string;
-
-    public value: string;
-
-    public display: string;
-
-    public shortcut: string[];
-
-    public keytype: ButtonType;
-
-    public funcHandler: CallableFunction;
-
-    public constructor({
-        name, xdata, value, display, shortcut, keytype, funcHandler,
-    }: ButtonInterface) {
-        this.name = name;
-        this.xdata = xdata;
-        this.value = value;
-        this.display = display;
-        this.shortcut = shortcut;
-        this.keytype = keytype;
-        this.funcHandler = funcHandler;
     }
 }
-function numberInput() {
+type ButtonInterface = {
+    name: string
+    xdata: string
+    value: string
+    display: string
+    shortcut: string[]
+    keytype: ButtonType
+    funcHandler: CallableFunction
+}
+export class Button {
+    public name: string
+
+    public xdata: string
+
+    public value: string
+
+    public display: string
+
+    public shortcut: string[]
+
+    public keytype: ButtonType
+
+    public funcHandler: CallableFunction
+
+    public constructor({ name, xdata, value, display, shortcut, keytype, funcHandler }: ButtonInterface) {
+        this.name = name
+        this.xdata = xdata
+        this.value = value
+        this.display = display
+        this.shortcut = shortcut
+        this.keytype = keytype
+        this.funcHandler = funcHandler
+    }
+}
+function numberInput(key: string) {
     /** Used numerous times for single digits numbers */
     if (!FrontendMathParserExtension.checkForNullExpression()) {
-        HTMLFetcher.getExpression().append(key);
+        HTMLFetcher.getExpression().append(key)
     } else {
-        HTMLFetcher.setExpression(key);
+        HTMLFetcher.setExpression(key)
     }
 }
-export default class ButtonCollection {
+export class ButtonCollection {
     public static ButtonAC = new Button({
         name: 'All Clear',
         xdata: '[data-key-allclear]',
@@ -73,10 +71,10 @@ export default class ButtonCollection {
         shortcut: ['Escape', 'Delete'],
         keytype: ButtonType.ACTION,
         funcHandler: () => {
-            HTMLFetcher.setExpression('0');
-            HTMLFetcher.setResult('0');
+            HTMLFetcher.setExpression('0')
+            HTMLFetcher.setResult('0')
         },
-    });
+    })
 
     public static ButtonEquals = new Button({
         name: 'Equals',
@@ -86,9 +84,9 @@ export default class ButtonCollection {
         shortcut: ['=', 'Enter'],
         keytype: ButtonType.ACTION,
         funcHandler: () => {
-            FrontendMathParserExtension.evaluateExpression();
+            FrontendMathParserExtension.evaluateExpression()
         },
-    });
+    })
 
     public static ButtonOpenParentheses = new Button({
         name: 'Open Parentheses',
@@ -99,12 +97,12 @@ export default class ButtonCollection {
         keytype: ButtonType.ADVANCED_OPERATOR,
         funcHandler: () => {
             if (FrontendMathParserExtension.checkForNullExpression()) {
-                HTMLFetcher.setExpression('(');
+                HTMLFetcher.setExpression('(')
             } else {
-                HTMLFetcher.getExpression().append('(');
+                HTMLFetcher.getExpression().append('(')
             }
         },
-    });
+    })
 
     public static ButtonDecimal = new Button({
         name: 'Decimal',
@@ -116,12 +114,11 @@ export default class ButtonCollection {
         funcHandler: () => {
             // eslint-disable-next-line no-empty
             if (HTMLFetcher.getExpressionText().includes('.') || FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '.')) {
-
             } else {
-                HTMLFetcher.getExpression().append('.');
+                HTMLFetcher.getExpression().append('.')
             }
         },
-    });
+    })
 
     public static ButtonCloseParentheses = new Button({
         name: 'Close Parentheses',
@@ -132,10 +129,10 @@ export default class ButtonCollection {
         keytype: ButtonType.ADVANCED_OPERATOR,
         funcHandler: () => {
             if (FrontendMathParserExtension.checkClosingParenthesesIsAllowed(HTMLFetcher.getExpressionText())) {
-                HTMLFetcher.getExpression().append(')');
+                HTMLFetcher.getExpression().append(')')
             }
         },
-    });
+    })
 
     public static ButtonNumberZero = new Button({
         name: 'Zero',
@@ -145,9 +142,9 @@ export default class ButtonCollection {
         shortcut: ['0'],
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
-            numberInput();
+            numberInput('0')
         },
-    });
+    })
 
     public static ButtonNumberOne = new Button({
         name: 'One',
@@ -157,9 +154,9 @@ export default class ButtonCollection {
         shortcut: ['1'],
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
-            numberInput();
+            numberInput('1')
         },
-    });
+    })
 
     public static ButtonNumberTwo = new Button({
         name: 'Two',
@@ -169,9 +166,9 @@ export default class ButtonCollection {
         shortcut: ['2'],
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
-            numberInput();
+            numberInput('2')
         },
-    });
+    })
 
     public static ButtonNumberThree = new Button({
         name: 'Three',
@@ -181,9 +178,9 @@ export default class ButtonCollection {
         shortcut: ['3'],
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
-            numberInput();
+            numberInput('3')
         },
-    });
+    })
 
     public static ButtonNumberFour = new Button({
         name: 'Four',
@@ -193,9 +190,9 @@ export default class ButtonCollection {
         shortcut: ['4'],
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
-            numberInput();
+            numberInput('4')
         },
-    });
+    })
 
     public static ButtonNumberFive = new Button({
         name: 'Five',
@@ -205,9 +202,9 @@ export default class ButtonCollection {
         shortcut: ['5'],
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
-            numberInput();
+            numberInput('5')
         },
-    });
+    })
 
     public static ButtonNumberSix = new Button({
         name: 'Six',
@@ -217,9 +214,9 @@ export default class ButtonCollection {
         shortcut: ['6'],
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
-            numberInput();
+            numberInput('6')
         },
-    });
+    })
 
     public static ButtonNumberSeven = new Button({
         name: 'Seven',
@@ -229,9 +226,9 @@ export default class ButtonCollection {
         shortcut: ['7'],
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
-            numberInput();
+            numberInput('7')
         },
-    });
+    })
 
     public static ButtonNumberEight = new Button({
         name: 'Eight',
@@ -241,9 +238,9 @@ export default class ButtonCollection {
         shortcut: ['8'],
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
-            numberInput();
+            numberInput('8')
         },
-    });
+    })
 
     public static ButtonNumberNine = new Button({
         name: 'Nine',
@@ -253,9 +250,9 @@ export default class ButtonCollection {
         shortcut: ['9'],
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
-            numberInput();
+            numberInput('9')
         },
-    });
+    })
 
     public static ButtonAddition = new Button({
         name: 'Plus',
@@ -267,10 +264,10 @@ export default class ButtonCollection {
         funcHandler: () => {
             // TODO: See todo-multiply
             if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '+')) {
-                HTMLFetcher.getExpression().append('+');
+                HTMLFetcher.getExpression().append('+')
             }
         },
-    });
+    })
 
     public static ButtonSubtraction = new Button({
         name: 'Minus',
@@ -283,13 +280,13 @@ export default class ButtonCollection {
             // TODO: after minus, only numbers allowed
             if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '-')) {
                 if (FrontendMathParserExtension.checkForNullExpression()) {
-                    HTMLFetcher.setExpression('-');
+                    HTMLFetcher.setExpression('-')
                 } else {
-                    HTMLFetcher.getExpression().append('-');
+                    HTMLFetcher.getExpression().append('-')
                 }
             }
         },
-    });
+    })
 
     public static ButtonDivision = new Button({
         name: 'Divide',
@@ -301,10 +298,10 @@ export default class ButtonCollection {
         funcHandler: () => {
             // TODO: See todo-multiply
             if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '/')) {
-                HTMLFetcher.getExpression().append('/');
+                HTMLFetcher.getExpression().append('/')
             }
         },
-    });
+    })
 
     public static ButtonMultiplication = new Button({
         name: 'Multiply',
@@ -316,10 +313,10 @@ export default class ButtonCollection {
         funcHandler: () => {
             // TODO: After multiply, only number or minus if times, divide or +, replace multiply sign
             if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '*')) {
-                HTMLFetcher.getExpression().append('*');
+                HTMLFetcher.getExpression().append('*')
             }
         },
-    });
+    })
 
     public static ButtonPercentage = new Button({
         name: 'Percentage',
@@ -330,10 +327,10 @@ export default class ButtonCollection {
         keytype: ButtonType.SIMPLE_OPERATOR,
         funcHandler: () => {
             if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '%')) {
-                HTMLFetcher.getExpression().append('%');
+                HTMLFetcher.getExpression().append('%')
             }
         },
-    });
+    })
 
     public static ButtonBackspace = new Button({
         name: 'Backspace',
@@ -343,9 +340,9 @@ export default class ButtonCollection {
         shortcut: ['Backspace', 'c'],
         keytype: ButtonType.ACTION,
         funcHandler: () => {
-            HTMLFetcher.setExpression(HTMLFetcher.getExpressionText().slice(0, -1));
+            HTMLFetcher.setExpression(HTMLFetcher.getExpressionText().slice(0, -1))
         },
-    });
+    })
 
     public static ButtonLessThan = new Button({
         name: 'Less Than',
@@ -355,9 +352,9 @@ export default class ButtonCollection {
         shortcut: ['<'],
         keytype: ButtonType.ADVANCED_OPERATOR,
         funcHandler: () => {
-            HTMLFetcher.getExpression().append('<');
+            HTMLFetcher.getExpression().append('<')
         },
-    });
+    })
 
     public static ButtonGreaterThan = new Button({
         name: 'Greater Than',
@@ -367,9 +364,9 @@ export default class ButtonCollection {
         shortcut: ['>'],
         keytype: ButtonType.ADVANCED_OPERATOR,
         funcHandler: () => {
-            HTMLFetcher.getExpression().append('>');
+            HTMLFetcher.getExpression().append('>')
         },
-    });
+    })
 
     public static ButtonLessThanOrEqual = new Button({
         name: 'Less Than or Equal',
@@ -379,9 +376,9 @@ export default class ButtonCollection {
         shortcut: [],
         keytype: ButtonType.ADVANCED_OPERATOR,
         funcHandler: () => {
-            HTMLFetcher.getExpression().append('<=');
+            HTMLFetcher.getExpression().append('<=')
         },
-    });
+    })
 
     public static ButtonGreaterThanOrEqual = new Button({
         name: 'Greater Than or Equal',
@@ -391,9 +388,9 @@ export default class ButtonCollection {
         shortcut: [],
         keytype: ButtonType.ADVANCED_OPERATOR,
         funcHandler: () => {
-            HTMLFetcher.getExpression().append('>=');
+            HTMLFetcher.getExpression().append('>=')
         },
-    });
+    })
 
     public static ButtonPower = new Button({
         name: 'Power',
@@ -404,10 +401,10 @@ export default class ButtonCollection {
         keytype: ButtonType.ADVANCED_OPERATOR,
         funcHandler: () => {
             if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '^')) {
-                HTMLFetcher.getExpression().append('^');
+                HTMLFetcher.getExpression().append('^')
             }
         },
-    });
+    })
 
     public static ButtonNaturalLogarithm = new Button({
         name: 'Natural Logarithm',
@@ -418,12 +415,12 @@ export default class ButtonCollection {
         keytype: ButtonType.COMPLEX_OPERATOR,
         funcHandler: () => {
             if (!FrontendMathParserExtension.checkForNullExpression()) {
-                HTMLFetcher.setExpression(`ln(${HTMLFetcher.getExpressionText()})`);
+                HTMLFetcher.setExpression(`ln(${HTMLFetcher.getExpressionText()})`)
             } else {
-                HTMLFetcher.setExpression('ln(');
+                HTMLFetcher.setExpression('ln(')
             }
         },
-    });
+    })
 
     public static ButtonLogarithm = new Button({
         name: 'Logarithm',
@@ -434,12 +431,12 @@ export default class ButtonCollection {
         keytype: ButtonType.COMPLEX_OPERATOR,
         funcHandler: () => {
             if (!FrontendMathParserExtension.checkForNullExpression()) {
-                HTMLFetcher.setExpression(`log(${HTMLFetcher.getExpressionText()})`);
+                HTMLFetcher.setExpression(`log(${HTMLFetcher.getExpressionText()})`)
             } else {
-                HTMLFetcher.setExpression('log(');
+                HTMLFetcher.setExpression('log(')
             }
         },
-    });
+    })
 
     public static ButtonFactorial = new Button({
         name: 'Factorial',
@@ -449,9 +446,9 @@ export default class ButtonCollection {
         shortcut: ['!'],
         keytype: ButtonType.COMPLEX_OPERATOR,
         funcHandler: () => {
-            HTMLFetcher.getExpression().append('!');
+            HTMLFetcher.getExpression().append('!')
         },
-    });
+    })
 
     public static ButtonSquareRoot = new Button({
         name: 'Square Root',
@@ -462,12 +459,12 @@ export default class ButtonCollection {
         keytype: ButtonType.COMPLEX_OPERATOR,
         funcHandler: () => {
             if (!FrontendMathParserExtension.checkForNullExpression()) {
-                HTMLFetcher.setExpression(`sqrt(${HTMLFetcher.getExpressionText()})`);
+                HTMLFetcher.setExpression(`sqrt(${HTMLFetcher.getExpressionText()})`)
             } else {
-                HTMLFetcher.setExpression('sqrt(');
+                HTMLFetcher.setExpression('sqrt(')
             }
         },
-    });
+    })
 
     public static ButtonCubicRoot = new Button({
         name: 'Cubic Root',
@@ -476,9 +473,8 @@ export default class ButtonCollection {
         display: 'Cbrt',
         shortcut: [],
         keytype: ButtonType.COMPLEX_OPERATOR,
-        funcHandler: () => {
-        },
-    });
+        funcHandler: () => {},
+    })
 
     public static ButtonNthRoot = new Button({
         name: 'Nth Root',
@@ -487,9 +483,8 @@ export default class ButtonCollection {
         display: 'NthRt',
         shortcut: [],
         keytype: ButtonType.COMPLEX_OPERATOR,
-        funcHandler: () => {
-        },
-    });
+        funcHandler: () => {},
+    })
 
     public static ButtonCosine = new Button({
         name: 'Cosine',
@@ -500,12 +495,12 @@ export default class ButtonCollection {
         keytype: ButtonType.COMPLEX_OPERATOR,
         funcHandler: () => {
             if (!FrontendMathParserExtension.checkForNullExpression()) {
-                HTMLFetcher.setExpression(`cos(${HTMLFetcher.getExpressionText()})`);
+                HTMLFetcher.setExpression(`cos(${HTMLFetcher.getExpressionText()})`)
             } else {
-                HTMLFetcher.setExpression('cos(');
+                HTMLFetcher.setExpression('cos(')
             }
         },
-    });
+    })
 
     public static ButtonSine = new Button({
         name: 'Sinus',
@@ -516,12 +511,12 @@ export default class ButtonCollection {
         keytype: ButtonType.COMPLEX_OPERATOR,
         funcHandler: () => {
             if (!FrontendMathParserExtension.checkForNullExpression()) {
-                HTMLFetcher.setExpression(`sin(${HTMLFetcher.getExpressionText()})`);
+                HTMLFetcher.setExpression(`sin(${HTMLFetcher.getExpressionText()})`)
             } else {
-                HTMLFetcher.setExpression('sin(');
+                HTMLFetcher.setExpression('sin(')
             }
         },
-    });
+    })
 
     public static ButtonTangent = new Button({
         name: 'Tangent',
@@ -532,12 +527,12 @@ export default class ButtonCollection {
         keytype: ButtonType.COMPLEX_OPERATOR,
         funcHandler: () => {
             if (!FrontendMathParserExtension.checkForNullExpression()) {
-                HTMLFetcher.setExpression(`tan(${HTMLFetcher.getExpressionText()})`);
+                HTMLFetcher.setExpression(`tan(${HTMLFetcher.getExpressionText()})`)
             } else {
-                HTMLFetcher.setExpression('tan(');
+                HTMLFetcher.setExpression('tan(')
             }
         },
-    });
+    })
 
     public static ButtonConstantE = new Button({
         name: 'e',
@@ -547,9 +542,9 @@ export default class ButtonCollection {
         shortcut: ['E'],
         keytype: ButtonType.CONSTANT,
         funcHandler: () => {
-            HTMLFetcher.getExpression().append('e');
+            HTMLFetcher.getExpression().append('e')
         },
-    });
+    })
 
     public static ButtonConstantPi = new Button({
         name: 'Pi',
@@ -559,9 +554,9 @@ export default class ButtonCollection {
         shortcut: ['P'],
         keytype: ButtonType.CONSTANT,
         funcHandler: () => {
-            HTMLFetcher.getExpression().append('pi');
+            HTMLFetcher.getExpression().append('pi')
         },
-    });
+    })
 }
 /**
      public static Button = new Button({

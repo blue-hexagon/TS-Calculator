@@ -26,7 +26,7 @@ var FrontendMathParserExtension = (function () {
         var opens = expressionString.match(/[(]/g);
         var closes = expressionString.match(/[)]/g);
         if ((opens === null || opens === void 0 ? void 0 : opens.length) && (closes === null || closes === void 0 ? void 0 : closes.length)) {
-            return (opens.length > closes.length);
+            return opens.length > closes.length;
         }
         if ((opens === null || opens === void 0 ? void 0 : opens.length) && opens.length > 0) {
             return true;

@@ -26,7 +26,8 @@ var Button = (function () {
     }
     return Button;
 }());
-function numberInput() {
+export { Button };
+function numberInput(key) {
     if (!FrontendMathParserExtension.checkForNullExpression()) {
         HTMLFetcher.getExpression().append(key);
     }
@@ -112,7 +113,7 @@ var ButtonCollection = (function () {
         shortcut: ['0'],
         keytype: "[data-number]",
         funcHandler: function () {
-            numberInput();
+            numberInput('0');
         },
     });
     ButtonCollection.ButtonNumberOne = new Button({
@@ -123,7 +124,7 @@ var ButtonCollection = (function () {
         shortcut: ['1'],
         keytype: "[data-number]",
         funcHandler: function () {
-            numberInput();
+            numberInput('1');
         },
     });
     ButtonCollection.ButtonNumberTwo = new Button({
@@ -134,7 +135,7 @@ var ButtonCollection = (function () {
         shortcut: ['2'],
         keytype: "[data-number]",
         funcHandler: function () {
-            numberInput();
+            numberInput('2');
         },
     });
     ButtonCollection.ButtonNumberThree = new Button({
@@ -145,7 +146,7 @@ var ButtonCollection = (function () {
         shortcut: ['3'],
         keytype: "[data-number]",
         funcHandler: function () {
-            numberInput();
+            numberInput('3');
         },
     });
     ButtonCollection.ButtonNumberFour = new Button({
@@ -156,7 +157,7 @@ var ButtonCollection = (function () {
         shortcut: ['4'],
         keytype: "[data-number]",
         funcHandler: function () {
-            numberInput();
+            numberInput('4');
         },
     });
     ButtonCollection.ButtonNumberFive = new Button({
@@ -167,7 +168,7 @@ var ButtonCollection = (function () {
         shortcut: ['5'],
         keytype: "[data-number]",
         funcHandler: function () {
-            numberInput();
+            numberInput('5');
         },
     });
     ButtonCollection.ButtonNumberSix = new Button({
@@ -178,7 +179,7 @@ var ButtonCollection = (function () {
         shortcut: ['6'],
         keytype: "[data-number]",
         funcHandler: function () {
-            numberInput();
+            numberInput('6');
         },
     });
     ButtonCollection.ButtonNumberSeven = new Button({
@@ -189,7 +190,7 @@ var ButtonCollection = (function () {
         shortcut: ['7'],
         keytype: "[data-number]",
         funcHandler: function () {
-            numberInput();
+            numberInput('7');
         },
     });
     ButtonCollection.ButtonNumberEight = new Button({
@@ -200,7 +201,7 @@ var ButtonCollection = (function () {
         shortcut: ['8'],
         keytype: "[data-number]",
         funcHandler: function () {
-            numberInput();
+            numberInput('8');
         },
     });
     ButtonCollection.ButtonNumberNine = new Button({
@@ -211,7 +212,7 @@ var ButtonCollection = (function () {
         shortcut: ['9'],
         keytype: "[data-number]",
         funcHandler: function () {
-            numberInput();
+            numberInput('9');
         },
     });
     ButtonCollection.ButtonAddition = new Button({
@@ -418,8 +419,7 @@ var ButtonCollection = (function () {
         display: 'Cbrt',
         shortcut: [],
         keytype: "[data-complexoperator]",
-        funcHandler: function () {
-        },
+        funcHandler: function () { },
     });
     ButtonCollection.ButtonNthRoot = new Button({
         name: 'Nth Root',
@@ -428,8 +428,7 @@ var ButtonCollection = (function () {
         display: 'NthRt',
         shortcut: [],
         keytype: "[data-complexoperator]",
-        funcHandler: function () {
-        },
+        funcHandler: function () { },
     });
     ButtonCollection.ButtonCosine = new Button({
         name: 'Cosine',
@@ -503,4 +502,4 @@ var ButtonCollection = (function () {
     });
     return ButtonCollection;
 }());
-export default ButtonCollection;
+export { ButtonCollection };

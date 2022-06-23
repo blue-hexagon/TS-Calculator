@@ -1,4 +1,4 @@
-import ButtonCollection from './calculator-button.js';
+import { ButtonCollection } from './calculator-button.js';
 var InputController = (function () {
     function InputController(cusorPosition) {
         if (cusorPosition === void 0) { cusorPosition = 0; }
@@ -12,12 +12,11 @@ var InputController = (function () {
         });
     };
     InputController.prototype.getShortcutsFromKeyInput = function (key) {
-        for (var _i = 0, _a = InputController.BUTTON_COLLECTION; _i < _a.length; _i++) {
-            var button = _a[_i];
+        InputController.BUTTON_COLLECTION.forEach(function (button) {
             if (button.shortcut.length > 0 && button.shortcut.includes(key)) {
                 return button.shortcut;
             }
-        }
+        });
     };
     InputController.prototype.getDataAttributeFromKeyInput = function (key) {
         for (var _i = 0, _a = InputController.BUTTON_COLLECTION; _i < _a.length; _i++) {

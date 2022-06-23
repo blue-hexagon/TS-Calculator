@@ -1,210 +1,170 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <!-- Meta Tags -->
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta charset="UTF-8" />
+        <meta name="description" content="JS Playground" />
+        <meta name="keywords" content="HTML, CSS, JavaScript" />
+        <meta name="author" content="Manjana" />
+        <meta name="copyright" content="2022" />
+        <meta name="robots" content="index, follow" />
+        <meta name="rating" content="general" />
 
-<head>
-    <!-- Meta Tags -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta charset="UTF-8">
-    <meta name="description" content="JS Playground">
-    <meta name="keywords" content="HTML, CSS, JavaScript">
-    <meta name="author" content="Manjana">
-    <meta name="copyright" content="2022">
-    <meta name="robots" content="index, follow">
-    <meta name="rating" content="general">
+        <!-- OpenGraph + TwitterCards -->
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Min Lommeregner" />
+        <meta property="og:url" content="https://www.minlommeregner.dk/" />
+        <meta property="og:image" content="imageURL..." />
+        <!-- TODO -->
+        <meta property="og:description" content="Her kan du bruge en lommeregner online!" />
 
-    <!-- OpenGraph + TwitterCards -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Min Lommeregner">
-    <meta property="og:url" content="https://www.minlommeregner.dk/">
-    <meta property="og:image" content="imageURL..."> <!-- TODO -->
-    <meta property="og:description" content="Her kan du bruge en lommeregner online!">
+        <!-- Favicon -->
+        <link rel="apple-touch-icon" sizes="180x180" href="./static/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="./static/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="./static/favicon-16x16.png" />
+        <link rel="manifest" href="./static/site.webmanifest" />
 
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="./static/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="./static/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="./static/favicon-16x16.png">
-    <link rel="manifest" href="./static/site.webmanifest">
+        <!-- Link Tags -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300&famildisy=Noto+Serif&family=Raleway:wght@200&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="./node_modules/bulma/css/bulma.min.css" />
 
-    <!-- Link Tags -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Manrope:wght@300&famildisy=Noto+Serif&family=Raleway:wght@200&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="./node_modules/bulma/css/bulma.min.css">
+        <!-- Script Tags -->
+        <script src="./node_modules/jquery/dist/jquery.min.js" type="text/javascript"></script>
+        <script src="./node_modules/alpinejs/dist/cdn.min.js" type="text/javascript"></script>
+        <script src="./node_modules/mathjs/lib/browser/math.js" type="text/javascript"></script>
+        <script defer type="module" src="./calc/dist/calc.js" type="text/javascript"></script>
 
-    <!-- Script Tags -->
-    <script src="./node_modules/jquery/dist/jquery.min.js" type="text/javascript"></script>
-    <script src="./node_modules/alpinejs/dist/cdn.min.js" type="text/javascript"></script>
-    <script src="./node_modules/mathjs/lib/browser/math.js" type="text/javascript"></script>
-    <script defer type="module" src="./calc/calc.js" type="text/javascript"></script>
+        <!-- Title Attribute -->
+        <title>Min Lommeregner</title>
 
-    <!-- Title Attribute -->
-    <title>Min Lommeregner</title>
-
-    <!-- Document Stylesheets -->
-    <style>
-        .button {
-            padding: 2rem 2.5rem;
-            max-width: 6rem;
-        }
-
-        #result {
-            padding-bottom: 1px;
-            line-height: 1.1;
-        }
-    </style>
-    <style>
-        body {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.com/svgjs' width='2000' height='2000' preserveAspectRatio='none' viewBox='0 0 2000 2000'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1007%26quot%3b)' fill='none'%3e%3crect width='2000' height='2000' x='0' y='0' fill='rgba(74%2c 74%2c 74%2c 1)'%3e%3c/rect%3e%3cpath d='M0%2c864.399C154.258%2c824.919%2c246.407%2c677.921%2c379.446%2c590.43C510.579%2c504.192%2c688.297%2c484.607%2c775.718%2c354.259C867.574%2c217.299%2c902.019%2c35.59%2c858.187%2c-123.389C815.797%2c-277.139%2c643.029%2c-346.676%2c547.295%2c-474.234C441.42%2c-615.305%2c438.314%2c-867.116%2c267.376%2c-910.6C94.531%2c-954.569%2c-41.053%2c-753.595%2c-194.668%2c-662.979C-308.202%2c-596.007%2c-412.983%2c-528.973%2c-516.946%2c-447.936C-647.486%2c-346.182%2c-849.311%2c-289.04%2c-882.44%2c-126.876C-915.274%2c33.841%2c-728.299%2c152.737%2c-671.066%2c306.466C-607.481%2c477.256%2c-668.975%2c706.382%2c-528.841%2c822.892C-390.063%2c938.274%2c-174.843%2c909.147%2c0%2c864.399' fill='%233c3c3c'%3e%3c/path%3e%3cpath d='M2000 2634.656C2153.45 2667.2290000000003 2306.654 2758.772 2455.165 2708.25 2611.361 2655.1130000000003 2740.279 2518.8540000000003 2796.428 2363.716 2851.294 2212.122 2777.886 2050.97 2750.56 1892.086 2724.071 1738.066 2732.025 1571.921 2638.692 1446.5700000000002 2542.542 1317.435 2395.463 1212.7930000000001 2235 1199.662 2080.954 1187.056 1957.648 1313.633 1817.773 1379.391 1701.933 1433.8490000000002 1590.495 1481.9450000000002 1483.8780000000002 1552.778 1339.187 1648.907 1146.65 1706.712 1082.255 1868.048 1016.123 2033.736 1034.7350000000001 2252.232 1150.5349999999999 2387.938 1266.5929999999998 2523.946 1482.414 2488.341 1654.114 2538.209 1771.434 2572.283 1880.495 2609.288 2000 2634.656' fill='%23585858'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1007'%3e%3crect width='2000' height='2000' fill='white'%3e%3c/rect%3e%3c/mask%3e%3c/defs%3e%3c/svg%3e");
-        }
-
-        @keyframes pulse {
-            from {
-                background-color: red;
+        <!-- Document Stylesheets -->
+        <style>
+            .button {
+                padding: 2rem 2.5rem;
+                max-width: 6rem;
             }
 
-            to {
-                background-color: yellow;
+            #result {
+                padding-bottom: 1px;
+                line-height: 1.1;
             }
-        }
-    </style>
-</head>
+        </style>
+        <style>
+            body {
+                background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.com/svgjs' width='2000' height='2000' preserveAspectRatio='none' viewBox='0 0 2000 2000'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1007%26quot%3b)' fill='none'%3e%3crect width='2000' height='2000' x='0' y='0' fill='rgba(74%2c 74%2c 74%2c 1)'%3e%3c/rect%3e%3cpath d='M0%2c864.399C154.258%2c824.919%2c246.407%2c677.921%2c379.446%2c590.43C510.579%2c504.192%2c688.297%2c484.607%2c775.718%2c354.259C867.574%2c217.299%2c902.019%2c35.59%2c858.187%2c-123.389C815.797%2c-277.139%2c643.029%2c-346.676%2c547.295%2c-474.234C441.42%2c-615.305%2c438.314%2c-867.116%2c267.376%2c-910.6C94.531%2c-954.569%2c-41.053%2c-753.595%2c-194.668%2c-662.979C-308.202%2c-596.007%2c-412.983%2c-528.973%2c-516.946%2c-447.936C-647.486%2c-346.182%2c-849.311%2c-289.04%2c-882.44%2c-126.876C-915.274%2c33.841%2c-728.299%2c152.737%2c-671.066%2c306.466C-607.481%2c477.256%2c-668.975%2c706.382%2c-528.841%2c822.892C-390.063%2c938.274%2c-174.843%2c909.147%2c0%2c864.399' fill='%233c3c3c'%3e%3c/path%3e%3cpath d='M2000 2634.656C2153.45 2667.2290000000003 2306.654 2758.772 2455.165 2708.25 2611.361 2655.1130000000003 2740.279 2518.8540000000003 2796.428 2363.716 2851.294 2212.122 2777.886 2050.97 2750.56 1892.086 2724.071 1738.066 2732.025 1571.921 2638.692 1446.5700000000002 2542.542 1317.435 2395.463 1212.7930000000001 2235 1199.662 2080.954 1187.056 1957.648 1313.633 1817.773 1379.391 1701.933 1433.8490000000002 1590.495 1481.9450000000002 1483.8780000000002 1552.778 1339.187 1648.907 1146.65 1706.712 1082.255 1868.048 1016.123 2033.736 1034.7350000000001 2252.232 1150.5349999999999 2387.938 1266.5929999999998 2523.946 1482.414 2488.341 1654.114 2538.209 1771.434 2572.283 1880.495 2609.288 2000 2634.656' fill='%23585858'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1007'%3e%3crect width='2000' height='2000' fill='white'%3e%3c/rect%3e%3c/mask%3e%3c/defs%3e%3c/svg%3e");
+            }
 
-<body class="is-flex is-align-items-center is-justify-content-center is-flex-direction-column">
-    <div style="height: 12rem;"></div>
-    <section class=" columns">
-        <div class="column is-3 is-flex is-align-items-center is-flex-direction-column">
-        </div>
-        <div class="column is-6 is-flex is-align-items-center is-flex-direction-column">
-            <div class="is-flex is-align-items-center is-flex-direction-column">
-                <div class="is-flex is-flex-direction-column">
-                    <div class="mx-2 my-1">
-                        <div
-                            class="is-flex is-justify-content-space-between is-flex-direction-row is-align-items-center">
-                            <div class="has-text-grey is-size-5">
-                                Regnestykke:
+            @keyframes pulse {
+                from {
+                    background-color: red;
+                }
+
+                to {
+                    background-color: yellow;
+                }
+            }
+        </style>
+    </head>
+
+    <body class="is-flex is-align-items-center is-justify-content-center is-flex-direction-column">
+        <div style="height: 12rem"></div>
+        <section class="columns">
+            <div class="column is-3 is-flex is-align-items-center is-flex-direction-column"></div>
+            <div class="column is-6 is-flex is-align-items-center is-flex-direction-column">
+                <div class="is-flex is-align-items-center is-flex-direction-column">
+                    <div class="is-flex is-flex-direction-column">
+                        <div class="mx-2 my-1">
+                            <div class="is-flex is-justify-content-space-between is-flex-direction-row is-align-items-center">
+                                <div class="has-text-grey is-size-5">Regnestykke:</div>
+                                <div id="expression" contenteditable="true" class="has-text-light is-size-3" style="caret-color: gray; font-size: 3rem">0</div>
                             </div>
-                            <div id="expression" contenteditable="true" class="has-text-light is-size-3"
-                                style="caret-color: gray;font-size: 3rem;">0</div>
-                        </div>
-                        <div
-                            class="is-flex is-justify-content-space-between is-flex-direction-row is-align-items-center">
-                            <div class="has-text-grey is-size-4">
-                                Resultat:
-                            </div>
-                            <div id="result" class="is-size-1 has-text-light">
-                                0
-                            </div>
-                        </div>
-                    </div>
-                    <div class="is-flex is-flex-direction-row">
-                        <div
-                            class="is-flex is-flex-direction-column is-justify-content-space-around is-flex-wrap-nowrap">
-                            <button class="button is-success" onclick="this.blur();" data-key-e></button>
-                            <button class="button is-success" onclick="this.blur();" data-key-pi></button>
-                            <button class="button is-success" onclick="this.blur();" data-key-sine></button>
-                            <button class="button is-success" onclick="this.blur();" data-key-cosine></button>
-                            <button class="button is-success" onclick="this.blur();" data-key-tangent></button>
-                        </div>
-                        <div
-                            class="is-flex is-flex-direction-column is-justify-content-space-around is-flex-wrap-nowrap">
-                            <button class="button is-success" onclick="this.blur();" data-key-factorial></button>
-                            <button class="button is-success" onclick="this.blur();" data-key-naturallog></button>
-                            <button class="button is-success" onclick="this.blur();" data-key-log></button>
-                            <button class="button is-success" onclick="this.blur();" data-key-squareroot></button>
-                            <button class="button is-success" onclick="this.blur();" data-key-power></button>
-                        </div>
-                        <div class="is-flex is-flex-direction-column">
-                            <div
-                                class="is-flex is-flex-direction-row is-justify-content-space-around is-flex-wrap-nowrap">
-                                <button class="button is-primary is-flex-grow-1" onclick="this.blur();"
-                                    data-key-openparentheses></button>
-                                <button class="button is-primary is-flex-grow-1" onclick="this.blur();"
-                                    data-key-closeparentheses></button>
-                                <button class="button is-primary is-flex-grow-1" onclick="this.blur();"
-                                    data-key-percentage></button>
-                            </div>
-                            <div
-                                class="is-flex is-flex-direction-row is-justify-content-space-around is-flex-wrap-nowrap">
-                                <button class="button is-primary is-flex-grow-1" onclick="this.blur();"
-                                    data-key-seven></button>
-                                <button class="button is-primary is-flex-grow-1" onclick="this.blur();"
-                                    data-key-eight></button>
-                                <button class="button is-primary is-flex-grow-1" onclick="this.blur();"
-                                    data-key-nine></button>
-                            </div>
-                            <div
-                                class="is-flex is-flex-direction-row is-justify-content-space-around is-flex-wrap-nowrap">
-                                <button class="button is-primary is-flex-grow-1" onclick="this.blur();"
-                                    data-key-four></button>
-                                <button class="button is-primary is-flex-grow-1" onclick="this.blur();"
-                                    data-key-five></button>
-                                <button class="button is-primary is-flex-grow-1" onclick="this.blur();"
-                                    data-key-six></button>
-                            </div>
-                            <div
-                                class="is-flex is-flex-direction-row is-justify-content-space-around is-flex-wrap-nowrap">
-                                <button class="button is-primary is-flex-grow-1" onclick="this.blur();"
-                                    data-key-one></button>
-                                <button class="button is-primary is-flex-grow-1" onclick="this.blur();"
-                                    data-key-two></button>
-                                <button class="button is-primary is-flex-grow-1" onclick="this.blur();"
-                                    data-key-three></button>
-                            </div>
-                            <div
-                                class="is-flex is-flex-direction-row is-justify-content-space-around is-flex-wrap-nowrap">
-                                <button class="button is-primary is-flex-grow-1" onclick="this.blur();"
-                                    data-key-zero></button>
-                                <button class="button is-primary is-flex-grow-1" onclick="this.blur();"
-                                    data-key-decimal></button>
-                                <button class="button is-primary is-flex-grow-1" onclick="this.blur();"
-                                    data-key-equals></button>
+                            <div class="is-flex is-justify-content-space-between is-flex-direction-row is-align-items-center">
+                                <div class="has-text-grey is-size-4">Resultat:</div>
+                                <div id="result" class="is-size-1 has-text-light">0</div>
                             </div>
                         </div>
-                        <div
-                            class="is-flex is-flex-direction-column is-justify-content-space-around is-flex-wrap-nowrap">
-                            <button class="button is-warning is-flex-grow-1" onclick="this.blur();"
-                                data-key-allclear></button>
-                            <button class="button is-danger" onclick="this.blur();" data-key-divide></button>
-                            <button class="button is-danger" onclick="this.blur();" data-key-multiply></button>
-                            <button class="button is-danger" onclick="this.blur();" data-key-minus></button>
-                            <button class="button is-danger" onclick="this.blur();" data-key-plus></button>
-                        </div>
-                        <div
-                            class="is-flex is-flex-direction-column is-justify-content-space-around is-flex-wrap-nowrap">
-                            <button class="button is-warning is-flex-grow-1" onclick="this.blur();"
-                                data-key-backspace></button>
-                            <button class="button is-danger" onclick="this.blur();" data-key-lt></button>
-                            <button class="button is-danger" onclick="this.blur();" data-key-gt></button>
-                            <button class="button is-danger" onclick="this.blur();" data-key-lteq></button>
-                            <button class="button is-danger" onclick="this.blur();" data-key-gteq></button>
+                        <div class="is-flex is-flex-direction-row">
+                            <div class="is-flex is-flex-direction-column is-justify-content-space-around is-flex-wrap-nowrap">
+                                <button class="button is-success" onclick="this.blur();" data-key-e></button>
+                                <button class="button is-success" onclick="this.blur();" data-key-pi></button>
+                                <button class="button is-success" onclick="this.blur();" data-key-sine></button>
+                                <button class="button is-success" onclick="this.blur();" data-key-cosine></button>
+                                <button class="button is-success" onclick="this.blur();" data-key-tangent></button>
+                            </div>
+                            <div class="is-flex is-flex-direction-column is-justify-content-space-around is-flex-wrap-nowrap">
+                                <button class="button is-success" onclick="this.blur();" data-key-factorial></button>
+                                <button class="button is-success" onclick="this.blur();" data-key-naturallog></button>
+                                <button class="button is-success" onclick="this.blur();" data-key-log></button>
+                                <button class="button is-success" onclick="this.blur();" data-key-squareroot></button>
+                                <button class="button is-success" onclick="this.blur();" data-key-power></button>
+                            </div>
+                            <div class="is-flex is-flex-direction-column">
+                                <div class="is-flex is-flex-direction-row is-justify-content-space-around is-flex-wrap-nowrap">
+                                    <button class="button is-primary is-flex-grow-1" onclick="this.blur();" data-key-openparentheses></button>
+                                    <button class="button is-primary is-flex-grow-1" onclick="this.blur();" data-key-closeparentheses></button>
+                                    <button class="button is-primary is-flex-grow-1" onclick="this.blur();" data-key-percentage></button>
+                                </div>
+                                <div class="is-flex is-flex-direction-row is-justify-content-space-around is-flex-wrap-nowrap">
+                                    <button class="button is-primary is-flex-grow-1" onclick="this.blur();" data-key-seven></button>
+                                    <button class="button is-primary is-flex-grow-1" onclick="this.blur();" data-key-eight></button>
+                                    <button class="button is-primary is-flex-grow-1" onclick="this.blur();" data-key-nine></button>
+                                </div>
+                                <div class="is-flex is-flex-direction-row is-justify-content-space-around is-flex-wrap-nowrap">
+                                    <button class="button is-primary is-flex-grow-1" onclick="this.blur();" data-key-four></button>
+                                    <button class="button is-primary is-flex-grow-1" onclick="this.blur();" data-key-five></button>
+                                    <button class="button is-primary is-flex-grow-1" onclick="this.blur();" data-key-six></button>
+                                </div>
+                                <div class="is-flex is-flex-direction-row is-justify-content-space-around is-flex-wrap-nowrap">
+                                    <button class="button is-primary is-flex-grow-1" onclick="this.blur();" data-key-one></button>
+                                    <button class="button is-primary is-flex-grow-1" onclick="this.blur();" data-key-two></button>
+                                    <button class="button is-primary is-flex-grow-1" onclick="this.blur();" data-key-three></button>
+                                </div>
+                                <div class="is-flex is-flex-direction-row is-justify-content-space-around is-flex-wrap-nowrap">
+                                    <button class="button is-primary is-flex-grow-1" onclick="this.blur();" data-key-zero></button>
+                                    <button class="button is-primary is-flex-grow-1" onclick="this.blur();" data-key-decimal></button>
+                                    <button class="button is-primary is-flex-grow-1" onclick="this.blur();" data-key-equals></button>
+                                </div>
+                            </div>
+                            <div class="is-flex is-flex-direction-column is-justify-content-space-around is-flex-wrap-nowrap">
+                                <button class="button is-warning is-flex-grow-1" onclick="this.blur();" data-key-allclear></button>
+                                <button class="button is-danger" onclick="this.blur();" data-key-divide></button>
+                                <button class="button is-danger" onclick="this.blur();" data-key-multiply></button>
+                                <button class="button is-danger" onclick="this.blur();" data-key-minus></button>
+                                <button class="button is-danger" onclick="this.blur();" data-key-plus></button>
+                            </div>
+                            <div class="is-flex is-flex-direction-column is-justify-content-space-around is-flex-wrap-nowrap">
+                                <button class="button is-warning is-flex-grow-1" onclick="this.blur();" data-key-backspace></button>
+                                <button class="button is-danger" onclick="this.blur();" data-key-lt></button>
+                                <button class="button is-danger" onclick="this.blur();" data-key-gt></button>
+                                <button class="button is-danger" onclick="this.blur();" data-key-lteq></button>
+                                <button class="button is-danger" onclick="this.blur();" data-key-gteq></button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="column is-3 is-flex is-align-items-center is-justify-content-center is-flex-direction-column ">
-        </div>
-    </section>
-    <div style="height: 12rem;"></div>
-    <footer class="footer has-background-dark box column is-10">
-        <div class="content has-text-centered has-text-white">
-            <h2 class="text-is-2 has-text-light">Tips & Tricks</h2>
-            <div class="content has-text-centered mt-4 mb-0 pb-0">
-                <table class="table is-" id="table"></table>
+            <div class="column is-3 is-flex is-align-items-center is-justify-content-center is-flex-direction-column"></div>
+        </section>
+        <div style="height: 12rem"></div>
+        <footer class="footer has-background-dark box column is-10">
+            <div class="content has-text-centered has-text-white">
+                <h2 class="text-is-2 has-text-light">Tips & Tricks</h2>
+                <div class="content has-text-centered mt-4 mb-0 pb-0">
+                    <table class="table is-" id="table"></table>
 
-                <p class="has-text-light">
-                    <strong class="has-text-light">HvadBliverDet?</strong> af <a class="has-text-white is-underlined"
-                        href="https://github.com/blue-hexagon">Blue Hexagon</a>
-                </p>
+                    <p class="has-text-light">
+                        <strong class="has-text-light">HvadBliverDet?</strong> af
+                        <a class="has-text-white is-underlined" href="https://github.com/blue-hexagon">Blue Hexagon</a>
+                    </p>
+                </div>
             </div>
-        </div>
-    </footer>
-    <script defer>
-        $("button").addClass("m-1");
-        $("button").addClass("is-large");
-    </script>
-</body>
-
+        </footer>
+        <script defer>
+            $('button').addClass('m-1')
+            $('button').addClass('is-large')
+        </script>
+    </body>
 </html>

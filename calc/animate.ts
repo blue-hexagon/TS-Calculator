@@ -1,16 +1,12 @@
 export default function wobble(selector: string) {
-    const el: HTMLElement = document.querySelector(selector)!;
+    const el: HTMLElement = document.querySelector(selector)!
     if (el === null && el === undefined) {
-        throw Error('Document query returned null or undefined when it should have returned a HTMLElement');
+        throw Error('Document query returned null or undefined when it should have returned a HTMLElement')
     }
-    console.log('log', el);
-    el.animate([
-        { transform: 'translate(0px, 0px)', backgroundColor: 'white' },
-        { transform: 'translate(0px, 2px)' },
-        { transform: 'translate(0px, 0px)' },
-    ], {
+    console.log('log', el)
+    el.animate([{ transform: 'translate(0px, 0px)', backgroundColor: 'white' }, { transform: 'translate(0px, 2px)' }, { transform: 'translate(0px, 0px)' }], {
         duration: 180,
-    });
+    })
 }
 /**
 public static idElFontSizeScaler(expression: HTMLElement, text: string): void {

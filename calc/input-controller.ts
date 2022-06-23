@@ -1,13 +1,13 @@
-import ButtonCollection from './calculator-button.js';
+import { ButtonCollection, Button } from './calculator-button.js'
 
 export default class InputController {
-    public cursorPosition: number;
+    public cursorPosition: number
 
     public constructor(cusorPosition = 0) {
-        this.cursorPosition = cusorPosition;
+        this.cursorPosition = cusorPosition
     }
 
-    public static BUTTON_COLLECTION = [
+    public static BUTTON_COLLECTION: Button[] = [
         ButtonCollection.ButtonAC,
         ButtonCollection.ButtonEquals,
         ButtonCollection.ButtonOpenParentheses,
@@ -45,37 +45,34 @@ export default class InputController {
         ButtonCollection.ButtonTangent,
         ButtonCollection.ButtonConstantE,
         ButtonCollection.ButtonConstantPi,
-    ];
+    ]
 
     public getButtonFromKeyInput(key: string): object | void {
-        InputController.BUTTON_COLLECTION.forEach((button) => {
+        InputController.BUTTON_COLLECTION.forEach(button => {
             if (button.shortcut.length > 0 && key in button.shortcut) {
-                return button;
+                return button
             }
-        });
+        })
     }
 
     public getShortcutsFromKeyInput(key: string): (string | null)[] | void {
-        // InputController.BUTTON_COLLECTION.forEach((button) => {
-
-        // });
-        for (const button of InputController.BUTTON_COLLECTION) {
+        InputController.BUTTON_COLLECTION.forEach(button => {
             if (button.shortcut.length > 0 && button.shortcut.includes(key)) {
-                return button.shortcut;
+                return button.shortcut
             }
-        }
+        })
     }
 
     public getDataAttributeFromKeyInput(key: string): string | void {
         for (const button of InputController.BUTTON_COLLECTION) {
             if (button.value === key || button.display === key) {
-                return button.xdata;
+                return button.xdata
             }
 
             if (button.shortcut !== null) {
                 for (const keyboardShortcut of button.shortcut) {
                     if (keyboardShortcut === key) {
-                        return button.xdata;
+                        return button.xdata
                     }
                 }
             }

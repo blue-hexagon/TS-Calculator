@@ -16,14 +16,14 @@ function inputSwitch(key) {
         console.warn('Calculator key not recognized');
     }
 }
-var _loop_1 = function (el) {
-    var handle = InputController.BUTTON_COLLECTION[el];
+var _loop_1 = function (iter) {
+    var handle = InputController.BUTTON_COLLECTION[iter];
     try {
         if (handle !== undefined && handle !== null) {
-            var el_1 = document.querySelector(handle.xdata);
-            el_1.innerHTML = handle.display;
+            var button = document.querySelector(handle.xdata);
+            button.innerHTML = handle.display;
             console.warn('xdata:', handle.xdata, document.querySelector(handle.xdata));
-            el_1.addEventListener('click', function () {
+            button.addEventListener('click', function () {
                 console.info("Clicked: ".concat(handle.value));
                 inputSwitch(handle.value);
             }, false);
@@ -33,8 +33,8 @@ var _loop_1 = function (el) {
         throw Error("A query for an element with attribute \"".concat(handle.xdata, "\" returned 'null' or 'undefined'.\nError: ").concat(error));
     }
 };
-for (var el = 0; el < InputController.BUTTON_COLLECTION.length; el += 1) {
-    _loop_1(el);
+for (var iter = 0; iter < InputController.BUTTON_COLLECTION.length; iter += 1) {
+    _loop_1(iter);
 }
 document.body.addEventListener('keydown', function (e) {
     console.log("Pressed: ".concat(e.key));
