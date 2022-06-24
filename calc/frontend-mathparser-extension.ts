@@ -1,24 +1,5 @@
 import HTMLFetcher from './html-fetcher.js'
-
 export default class FrontendMathParserExtension {
-    public static evaluateExpression(): void {
-        /** Checks to see if the expression contains equality operators
-         *  - and if so converts and returns the result as a boolean value
-         *  - and if not return the results
-         *  - and if the evaluation fails because of an improper expression-string
-         *    it returns a localized word for error
-         */
-        try {
-            const result = String(math.round(math.evaluate(HTMLFetcher.getExpression().textContent as string), 10))
-            if (HTMLFetcher.getExpressionText.toString().search('/(<=|<|=>|>)+/') >= 0) {
-                HTMLFetcher.getResult().innerHTML = String(Boolean(result))
-            } else {
-                HTMLFetcher.getResult().innerHTML = result
-            }
-        } catch {
-            HTMLFetcher.getResult().innerHTML = 'Fejl'
-        }
-    }
     public static checkForNullExpression(): boolean {
         return HTMLFetcher.getExpressionText() === '0'
     }
@@ -40,5 +21,24 @@ export default class FrontendMathParserExtension {
             return true
         }
         return false
+    }
+
+    public static evaluateExpression(): void {
+        /** Checks to see if the expression contains equality operators
+         *  - and if so converts and returns the result as a boolean value
+         *  - and if not return the results
+         *  - and if the evaluation fails because of an improper expression-string
+         *    it returns a localized word for error
+         */
+        try {
+            const result = String(math.round(math.evaluate(HTMLFetcher.getExpression().textContent as string), 10))
+            if (HTMLFetcher.getExpressionText.toString().search('/(<=|<|=>|>)+/') >= 0) {
+                HTMLFetcher.getResult().innerHTML = String(Boolean(result))
+            } else {
+                HTMLFetcher.getResult().innerHTML = result
+            }
+        } catch {
+            HTMLFetcher.getResult().innerHTML = 'Fejl'
+        }
     }
 }

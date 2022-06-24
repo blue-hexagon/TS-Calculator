@@ -52,17 +52,15 @@ export default class InputController {
             flashAnimation(dataAttribute)
         }
 
-        /** Match the keyclick/keypress with an action */
-        const keys = InputController.getShortcutsFromKeyInput(key)
-        if (keys) {
-            console.log(key, keys)
-            const btn = InputController.getButtonFromKeyInput(key) as Button
-            btn.funcHandler()
+        /** Run the buttons funcHandler() on keyclick/keypress */
+        const button = InputController.getButtonFromKeyInput(key)
+        if (button) {
+            button.funcHandler()
         } else {
-            console.warn('Calculator key not recognized')
+            console.debug('Calculator key not recognized')
         }
     }
-    public static setupEventListeners() {
+    public static setup() {
         /** Setup event listeners for click and keypresses */
         for (let iter = 0; iter < InputController.BUTTON_COLLECTION.length; iter += 1) {
             const handle = InputController.BUTTON_COLLECTION[iter]
@@ -84,7 +82,7 @@ export default class InputController {
                     )
                 }
             } catch (error) {
-                throw Error(`A query for an element with attribute "${handle.xdata}" returned 'null' or 'undefined'.\nError: ${error}`)
+                throw Error(`setup:: a query for an element with attribute "${handle.xdata}" returned 'null' or 'undefined'.\nError: ${error}.`)
             }
         }
         /** Add keydown eventlisteners */

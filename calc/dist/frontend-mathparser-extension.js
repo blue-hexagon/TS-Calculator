@@ -2,20 +2,6 @@ import HTMLFetcher from './html-fetcher.js';
 var FrontendMathParserExtension = (function () {
     function FrontendMathParserExtension() {
     }
-    FrontendMathParserExtension.evaluateExpression = function () {
-        try {
-            var result = String(math.round(math.evaluate(HTMLFetcher.getExpression().textContent), 10));
-            if (HTMLFetcher.getExpressionText.toString().search('/(<=|<|=>|>)+/') >= 0) {
-                HTMLFetcher.getResult().innerHTML = String(Boolean(result));
-            }
-            else {
-                HTMLFetcher.getResult().innerHTML = result;
-            }
-        }
-        catch (_a) {
-            HTMLFetcher.getResult().innerHTML = 'Fejl';
-        }
-    };
     FrontendMathParserExtension.checkForNullExpression = function () {
         return HTMLFetcher.getExpressionText() === '0';
     };
@@ -32,6 +18,20 @@ var FrontendMathParserExtension = (function () {
             return true;
         }
         return false;
+    };
+    FrontendMathParserExtension.evaluateExpression = function () {
+        try {
+            var result = String(math.round(math.evaluate(HTMLFetcher.getExpression().textContent), 10));
+            if (HTMLFetcher.getExpressionText.toString().search('/(<=|<|=>|>)+/') >= 0) {
+                HTMLFetcher.getResult().innerHTML = String(Boolean(result));
+            }
+            else {
+                HTMLFetcher.getResult().innerHTML = result;
+            }
+        }
+        catch (_a) {
+            HTMLFetcher.getResult().innerHTML = 'Fejl';
+        }
     };
     return FrontendMathParserExtension;
 }());

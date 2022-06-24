@@ -10,17 +10,15 @@ var InputController = (function () {
         if (dataAttribute !== null && dataAttribute !== undefined) {
             flashAnimation(dataAttribute);
         }
-        var keys = InputController.getShortcutsFromKeyInput(key);
-        if (keys) {
-            console.log(key, keys);
-            var btn = InputController.getButtonFromKeyInput(key);
-            btn.funcHandler();
+        var button = InputController.getButtonFromKeyInput(key);
+        if (button) {
+            button.funcHandler();
         }
         else {
-            console.warn('Calculator key not recognized');
+            console.debug('Calculator key not recognized');
         }
     };
-    InputController.setupEventListeners = function () {
+    InputController.setup = function () {
         var _loop_1 = function (iter) {
             var handle = InputController.BUTTON_COLLECTION[iter];
             try {
@@ -35,7 +33,7 @@ var InputController = (function () {
                 }
             }
             catch (error) {
-                throw Error("A query for an element with attribute \"".concat(handle.xdata, "\" returned 'null' or 'undefined'.\nError: ").concat(error));
+                throw Error("setup:: a query for an element with attribute \"".concat(handle.xdata, "\" returned 'null' or 'undefined'.\nError: ").concat(error, "."));
             }
         };
         for (var iter = 0; iter < InputController.BUTTON_COLLECTION.length; iter += 1) {

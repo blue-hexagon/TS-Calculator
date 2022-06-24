@@ -1,8 +1,10 @@
-export default function flashAnimation(selector: string) {
-    const button: HTMLElement = document.querySelector(selector)!
+export default function flashAnimation(dataAttribSelector: string) {
+    const button: HTMLElement = document.querySelector(dataAttribSelector)!
     if (button === null && button === undefined) {
         throw Error(
-            `flashAnimation::Document query for a button [${document.querySelector(selector)}] returned null or undefined when it should have returned an HTMLElement.`,
+            `flashAnimation::Document query for a button [${document.querySelector(
+                dataAttribSelector,
+            )}] returned null or undefined when it should have returned an HTMLElement.`,
         )
     }
     console.log('log', button)
