@@ -1,4 +1,5 @@
-export default class HTMLFetcher {
+export default class DOMAccessor {
+    /** A utility class for accessubg and mutating DOM elements */
     public static getExpression(): HTMLElement {
         return document.getElementById('expression')!
     }

@@ -1,5 +1,4 @@
-import HTMLFetcher from './html-fetcher.js';
-import FrontendMathParserExtension from './frontend-mathparser-extension.js';
+import DOMAccessor from './dom-accessor.js';
 var ButtonColor = (function () {
     function ButtonColor() {
     }
@@ -26,17 +25,48 @@ var Button = (function () {
     return Button;
 }());
 export { Button };
-function numberInput(key) {
-    if (!FrontendMathParserExtension.checkForNullExpression()) {
-        HTMLFetcher.getExpression().append(key);
-    }
-    else {
-        HTMLFetcher.setExpression(key);
-    }
-}
 var ButtonCollection = (function () {
     function ButtonCollection() {
     }
+    ButtonCollection.numberInput = function (key) {
+        if (!ButtonCollection.resultIsZero()) {
+            DOMAccessor.getExpression().append(key);
+        }
+        else {
+            DOMAccessor.setExpression(key);
+        }
+    };
+    ButtonCollection.resultIsZero = function () {
+        return DOMAccessor.getExpressionText() === '0';
+    };
+    ButtonCollection.checkCharacterIsNotARepeat = function (appendableString, char) {
+        return appendableString[appendableString.length - 1] === char;
+    };
+    ButtonCollection.checkClosingParenthesesIsAllowed = function (expressionString) {
+        var opens = expressionString.match(/[(]/g);
+        var closes = expressionString.match(/[)]/g);
+        if ((opens === null || opens === void 0 ? void 0 : opens.length) && (closes === null || closes === void 0 ? void 0 : closes.length)) {
+            return opens.length > closes.length;
+        }
+        if ((opens === null || opens === void 0 ? void 0 : opens.length) && opens.length > 0) {
+            return true;
+        }
+        return false;
+    };
+    ButtonCollection.evaluateExpression = function () {
+        try {
+            var result = String(math.round(math.evaluate(DOMAccessor.getExpression().textContent), 10));
+            if (DOMAccessor.getExpressionText.toString().search('/(<=|<|=>|>)+/') >= 0) {
+                DOMAccessor.getResult().innerHTML = String(Boolean(result));
+            }
+            else {
+                DOMAccessor.getResult().innerHTML = result;
+            }
+        }
+        catch (_a) {
+            DOMAccessor.getResult().innerHTML = 'Fejl';
+        }
+    };
     ButtonCollection.ButtonAC = new Button({
         name: 'All Clear',
         xdata: '[data-key-allclear]',
@@ -46,8 +76,8 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.ACTION,
         keytype: "[data-action]",
         funcHandler: function () {
-            HTMLFetcher.setExpression('0');
-            HTMLFetcher.setResult('0');
+            DOMAccessor.setExpression('0');
+            DOMAccessor.setResult('0');
         },
     });
     ButtonCollection.ButtonEquals = new Button({
@@ -59,7 +89,7 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.ACTION,
         keytype: "[data-action]",
         funcHandler: function () {
-            FrontendMathParserExtension.evaluateExpression();
+            ButtonCollection.evaluateExpression();
         },
     });
     ButtonCollection.ButtonOpenParentheses = new Button({
@@ -71,11 +101,11 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.ADVANCED_OPERATOR,
         keytype: "[data-advancedoperator]",
         funcHandler: function () {
-            if (FrontendMathParserExtension.checkForNullExpression()) {
-                HTMLFetcher.setExpression('(');
+            if (ButtonCollection.resultIsZero()) {
+                DOMAccessor.setExpression('(');
             }
             else {
-                HTMLFetcher.getExpression().append('(');
+                DOMAccessor.getExpression().append('(');
             }
         },
     });
@@ -88,10 +118,10 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.SIMPLE_OPERATOR,
         keytype: "[data-simpleoperator]",
         funcHandler: function () {
-            if (HTMLFetcher.getExpressionText().includes('.') || FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '.')) {
+            if (DOMAccessor.getExpressionText().includes('.') || ButtonCollection.checkCharacterIsNotARepeat(DOMAccessor.getExpressionText(), '.')) {
             }
             else {
-                HTMLFetcher.getExpression().append('.');
+                DOMAccessor.getExpression().append('.');
             }
         },
     });
@@ -104,8 +134,8 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.ADVANCED_OPERATOR,
         keytype: "[data-advancedoperator]",
         funcHandler: function () {
-            if (FrontendMathParserExtension.checkClosingParenthesesIsAllowed(HTMLFetcher.getExpressionText())) {
-                HTMLFetcher.getExpression().append(')');
+            if (ButtonCollection.checkClosingParenthesesIsAllowed(DOMAccessor.getExpressionText())) {
+                DOMAccessor.getExpression().append(')');
             }
         },
     });
@@ -118,7 +148,7 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.NUMBER,
         keytype: "[data-number]",
         funcHandler: function () {
-            numberInput('0');
+            ButtonCollection.numberInput('0');
         },
     });
     ButtonCollection.ButtonNumberOne = new Button({
@@ -130,7 +160,7 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.NUMBER,
         keytype: "[data-number]",
         funcHandler: function () {
-            numberInput('1');
+            ButtonCollection.numberInput('1');
         },
     });
     ButtonCollection.ButtonNumberTwo = new Button({
@@ -142,7 +172,7 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.NUMBER,
         keytype: "[data-number]",
         funcHandler: function () {
-            numberInput('2');
+            ButtonCollection.numberInput('2');
         },
     });
     ButtonCollection.ButtonNumberThree = new Button({
@@ -154,7 +184,7 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.NUMBER,
         keytype: "[data-number]",
         funcHandler: function () {
-            numberInput('3');
+            ButtonCollection.numberInput('3');
         },
     });
     ButtonCollection.ButtonNumberFour = new Button({
@@ -166,7 +196,7 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.NUMBER,
         keytype: "[data-number]",
         funcHandler: function () {
-            numberInput('4');
+            ButtonCollection.numberInput('4');
         },
     });
     ButtonCollection.ButtonNumberFive = new Button({
@@ -178,7 +208,7 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.NUMBER,
         keytype: "[data-number]",
         funcHandler: function () {
-            numberInput('5');
+            ButtonCollection.numberInput('5');
         },
     });
     ButtonCollection.ButtonNumberSix = new Button({
@@ -190,7 +220,7 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.NUMBER,
         keytype: "[data-number]",
         funcHandler: function () {
-            numberInput('6');
+            ButtonCollection.numberInput('6');
         },
     });
     ButtonCollection.ButtonNumberSeven = new Button({
@@ -202,7 +232,7 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.NUMBER,
         keytype: "[data-number]",
         funcHandler: function () {
-            numberInput('7');
+            ButtonCollection.numberInput('7');
         },
     });
     ButtonCollection.ButtonNumberEight = new Button({
@@ -214,7 +244,7 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.NUMBER,
         keytype: "[data-number]",
         funcHandler: function () {
-            numberInput('8');
+            ButtonCollection.numberInput('8');
         },
     });
     ButtonCollection.ButtonNumberNine = new Button({
@@ -226,7 +256,7 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.NUMBER,
         keytype: "[data-number]",
         funcHandler: function () {
-            numberInput('9');
+            ButtonCollection.numberInput('9');
         },
     });
     ButtonCollection.ButtonAddition = new Button({
@@ -238,8 +268,8 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.SIMPLE_OPERATOR,
         keytype: "[data-simpleoperator]",
         funcHandler: function () {
-            if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '+')) {
-                HTMLFetcher.getExpression().append('+');
+            if (!ButtonCollection.checkCharacterIsNotARepeat(DOMAccessor.getExpressionText(), '+')) {
+                DOMAccessor.getExpression().append('+');
             }
         },
     });
@@ -252,12 +282,12 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.SIMPLE_OPERATOR,
         keytype: "[data-simpleoperator]",
         funcHandler: function () {
-            if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '-')) {
-                if (FrontendMathParserExtension.checkForNullExpression()) {
-                    HTMLFetcher.setExpression('-');
+            if (!ButtonCollection.checkCharacterIsNotARepeat(DOMAccessor.getExpressionText(), '-')) {
+                if (ButtonCollection.resultIsZero()) {
+                    DOMAccessor.setExpression('-');
                 }
                 else {
-                    HTMLFetcher.getExpression().append('-');
+                    DOMAccessor.getExpression().append('-');
                 }
             }
         },
@@ -271,8 +301,8 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.SIMPLE_OPERATOR,
         keytype: "[data-simpleoperator]",
         funcHandler: function () {
-            if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '/')) {
-                HTMLFetcher.getExpression().append('/');
+            if (!ButtonCollection.checkCharacterIsNotARepeat(DOMAccessor.getExpressionText(), '/')) {
+                DOMAccessor.getExpression().append('/');
             }
         },
     });
@@ -285,8 +315,8 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.SIMPLE_OPERATOR,
         keytype: "[data-simpleoperator]",
         funcHandler: function () {
-            if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '*')) {
-                HTMLFetcher.getExpression().append('*');
+            if (!ButtonCollection.checkCharacterIsNotARepeat(DOMAccessor.getExpressionText(), '*')) {
+                DOMAccessor.getExpression().append('*');
             }
         },
     });
@@ -299,8 +329,8 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.SIMPLE_OPERATOR,
         keytype: "[data-simpleoperator]",
         funcHandler: function () {
-            if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '%')) {
-                HTMLFetcher.getExpression().append('%');
+            if (!ButtonCollection.checkCharacterIsNotARepeat(DOMAccessor.getExpressionText(), '%')) {
+                DOMAccessor.getExpression().append('%');
             }
         },
     });
@@ -313,7 +343,7 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.ACTION,
         keytype: "[data-action]",
         funcHandler: function () {
-            HTMLFetcher.setExpression(HTMLFetcher.getExpressionText().slice(0, -1));
+            DOMAccessor.setExpression(DOMAccessor.getExpressionText().slice(0, -1));
         },
     });
     ButtonCollection.ButtonLessThan = new Button({
@@ -325,7 +355,7 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.ADVANCED_OPERATOR,
         keytype: "[data-advancedoperator]",
         funcHandler: function () {
-            HTMLFetcher.getExpression().append('<');
+            DOMAccessor.getExpression().append('<');
         },
     });
     ButtonCollection.ButtonGreaterThan = new Button({
@@ -337,7 +367,7 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.ADVANCED_OPERATOR,
         keytype: "[data-advancedoperator]",
         funcHandler: function () {
-            HTMLFetcher.getExpression().append('>');
+            DOMAccessor.getExpression().append('>');
         },
     });
     ButtonCollection.ButtonLessThanOrEqual = new Button({
@@ -349,7 +379,7 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.ADVANCED_OPERATOR,
         keytype: "[data-advancedoperator]",
         funcHandler: function () {
-            HTMLFetcher.getExpression().append('<=');
+            DOMAccessor.getExpression().append('<=');
         },
     });
     ButtonCollection.ButtonGreaterThanOrEqual = new Button({
@@ -361,7 +391,7 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.ADVANCED_OPERATOR,
         keytype: "[data-advancedoperator]",
         funcHandler: function () {
-            HTMLFetcher.getExpression().append('>=');
+            DOMAccessor.getExpression().append('>=');
         },
     });
     ButtonCollection.ButtonPower = new Button({
@@ -373,8 +403,8 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.ADVANCED_OPERATOR,
         keytype: "[data-advancedoperator]",
         funcHandler: function () {
-            if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '^')) {
-                HTMLFetcher.getExpression().append('^');
+            if (!ButtonCollection.checkCharacterIsNotARepeat(DOMAccessor.getExpressionText(), '^')) {
+                DOMAccessor.getExpression().append('^');
             }
         },
     });
@@ -387,11 +417,11 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: "[data-complexoperator]",
         funcHandler: function () {
-            if (!FrontendMathParserExtension.checkForNullExpression()) {
-                HTMLFetcher.setExpression("ln(".concat(HTMLFetcher.getExpressionText(), ")"));
+            if (!ButtonCollection.resultIsZero()) {
+                DOMAccessor.setExpression("ln(".concat(DOMAccessor.getExpressionText(), ")"));
             }
             else {
-                HTMLFetcher.setExpression('ln(');
+                DOMAccessor.setExpression('ln(');
             }
         },
     });
@@ -404,11 +434,11 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: "[data-complexoperator]",
         funcHandler: function () {
-            if (!FrontendMathParserExtension.checkForNullExpression()) {
-                HTMLFetcher.setExpression("log(".concat(HTMLFetcher.getExpressionText(), ")"));
+            if (!ButtonCollection.resultIsZero()) {
+                DOMAccessor.setExpression("log(".concat(DOMAccessor.getExpressionText(), ")"));
             }
             else {
-                HTMLFetcher.setExpression('log(');
+                DOMAccessor.setExpression('log(');
             }
         },
     });
@@ -421,7 +451,7 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: "[data-complexoperator]",
         funcHandler: function () {
-            HTMLFetcher.getExpression().append('!');
+            DOMAccessor.getExpression().append('!');
         },
     });
     ButtonCollection.ButtonSquareRoot = new Button({
@@ -433,11 +463,11 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: "[data-complexoperator]",
         funcHandler: function () {
-            if (!FrontendMathParserExtension.checkForNullExpression()) {
-                HTMLFetcher.setExpression("sqrt(".concat(HTMLFetcher.getExpressionText(), ")"));
+            if (!ButtonCollection.resultIsZero()) {
+                DOMAccessor.setExpression("sqrt(".concat(DOMAccessor.getExpressionText(), ")"));
             }
             else {
-                HTMLFetcher.setExpression('sqrt(');
+                DOMAccessor.setExpression('sqrt(');
             }
         },
     });
@@ -472,11 +502,11 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: "[data-complexoperator]",
         funcHandler: function () {
-            if (!FrontendMathParserExtension.checkForNullExpression()) {
-                HTMLFetcher.setExpression("cos(".concat(HTMLFetcher.getExpressionText(), ")"));
+            if (!ButtonCollection.resultIsZero()) {
+                DOMAccessor.setExpression("cos(".concat(DOMAccessor.getExpressionText(), ")"));
             }
             else {
-                HTMLFetcher.setExpression('cos(');
+                DOMAccessor.setExpression('cos(');
             }
         },
     });
@@ -489,11 +519,11 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: "[data-complexoperator]",
         funcHandler: function () {
-            if (!FrontendMathParserExtension.checkForNullExpression()) {
-                HTMLFetcher.setExpression("sin(".concat(HTMLFetcher.getExpressionText(), ")"));
+            if (!ButtonCollection.resultIsZero()) {
+                DOMAccessor.setExpression("sin(".concat(DOMAccessor.getExpressionText(), ")"));
             }
             else {
-                HTMLFetcher.setExpression('sin(');
+                DOMAccessor.setExpression('sin(');
             }
         },
     });
@@ -506,11 +536,11 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: "[data-complexoperator]",
         funcHandler: function () {
-            if (!FrontendMathParserExtension.checkForNullExpression()) {
-                HTMLFetcher.setExpression("tan(".concat(HTMLFetcher.getExpressionText(), ")"));
+            if (!ButtonCollection.resultIsZero()) {
+                DOMAccessor.setExpression("tan(".concat(DOMAccessor.getExpressionText(), ")"));
             }
             else {
-                HTMLFetcher.setExpression('tan(');
+                DOMAccessor.setExpression('tan(');
             }
         },
     });
@@ -523,7 +553,7 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.CONSTANT,
         keytype: "[data-constant]",
         funcHandler: function () {
-            HTMLFetcher.getExpression().append('e');
+            DOMAccessor.getExpression().append('e');
         },
     });
     ButtonCollection.ButtonConstantPi = new Button({
@@ -535,7 +565,7 @@ var ButtonCollection = (function () {
         btnColors: ButtonColor.CONSTANT,
         keytype: "[data-constant]",
         funcHandler: function () {
-            HTMLFetcher.getExpression().append('pi');
+            DOMAccessor.getExpression().append('pi');
         },
     });
     return ButtonCollection;

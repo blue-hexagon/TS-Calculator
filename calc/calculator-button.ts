@@ -1,7 +1,16 @@
 /* eslint-disable max-classes-per-file */
-import HTMLFetcher from './html-fetcher.js'
-import FrontendMathParserExtension from './frontend-mathparser-extension.js'
+import DOMAccessor from './dom-accessor.js'
 
+type ButtonInterface = {
+    name: string
+    xdata: string
+    value: string
+    display: string
+    shortcut: string[]
+    keytype: ButtonType
+    btnColors: ButtonColor
+    funcHandler: CallableFunction
+}
 const enum ButtonType {
     NUMBER = '[data-number]',
     CONSTANT = '[data-constant]',
@@ -17,16 +26,6 @@ class ButtonColor {
     public static SIMPLE_OPERATOR: [string, string] = ['yellow', 'darkyellow']
     public static ADVANCED_OPERATOR: [string, string] = ['orange', 'darkorange']
     public static COMPLEX_OPERATOR: [string, string] = ['cyan', 'darkcyan']
-}
-type ButtonInterface = {
-    name: string
-    xdata: string
-    value: string
-    display: string
-    shortcut: string[]
-    keytype: ButtonType
-    btnColors: ButtonColor
-    funcHandler: CallableFunction
 }
 export class Button {
     public name: string
@@ -48,15 +47,58 @@ export class Button {
         this.funcHandler = funcHandler
     }
 }
-function numberInput(key: string) {
-    /** Used numerous times for single digits numbers */
-    if (!FrontendMathParserExtension.checkForNullExpression()) {
-        HTMLFetcher.getExpression().append(key)
-    } else {
-        HTMLFetcher.setExpression(key)
-    }
-}
+
 export class ButtonCollection {
+    private static numberInput(key: string) {
+        /** Used numerous times for single digits numbers */
+        if (!ButtonCollection.resultIsZero()) {
+            DOMAccessor.getExpression().append(key)
+        } else {
+            DOMAccessor.setExpression(key)
+        }
+    }
+    private static resultIsZero(): boolean {
+        return DOMAccessor.getExpressionText() === '0'
+    }
+
+    private static checkCharacterIsNotARepeat(appendableString: string, char: string): boolean {
+        return appendableString[appendableString.length - 1] === char
+    }
+
+    private static checkClosingParenthesesIsAllowed(expressionString: string): boolean {
+        /* Checks that a closing parentheses is allowed.
+         - A closing parentheses is allowed only if the number of opening parentheses >= closing parentheses
+         - Otherwise a closing parentheses is not allowed */
+        const opens = expressionString.match(/[(]/g)
+        const closes = expressionString.match(/[)]/g)
+        if (opens?.length && closes?.length) {
+            return opens.length > closes.length
+        }
+        if (opens?.length && opens.length > 0) {
+            return true
+        }
+        return false
+    }
+
+    private static evaluateExpression(): void {
+        /** Checks to see if the expression contains equality operators
+         *  - and if so converts and returns the result as a boolean value
+         *  - and if not return the results
+         *  - and if the evaluation fails because of an improper expression-string
+         *    it returns a localized word for error
+         */
+        try {
+            const result = String(math.round(math.evaluate(DOMAccessor.getExpression().textContent as string), 10))
+            if (DOMAccessor.getExpressionText.toString().search('/(<=|<|=>|>)+/') >= 0) {
+                DOMAccessor.getResult().innerHTML = String(Boolean(result))
+            } else {
+                DOMAccessor.getResult().innerHTML = result
+            }
+        } catch {
+            DOMAccessor.getResult().innerHTML = 'Fejl'
+        }
+    }
+
     public static ButtonAC = new Button({
         name: 'All Clear',
         xdata: '[data-key-allclear]',
@@ -66,8 +108,8 @@ export class ButtonCollection {
         btnColors: ButtonColor.ACTION,
         keytype: ButtonType.ACTION,
         funcHandler: () => {
-            HTMLFetcher.setExpression('0')
-            HTMLFetcher.setResult('0')
+            DOMAccessor.setExpression('0')
+            DOMAccessor.setResult('0')
         },
     })
 
@@ -80,7 +122,7 @@ export class ButtonCollection {
         btnColors: ButtonColor.ACTION,
         keytype: ButtonType.ACTION,
         funcHandler: () => {
-            FrontendMathParserExtension.evaluateExpression()
+            ButtonCollection.evaluateExpression()
         },
     })
 
@@ -93,10 +135,10 @@ export class ButtonCollection {
         btnColors: ButtonColor.ADVANCED_OPERATOR,
         keytype: ButtonType.ADVANCED_OPERATOR,
         funcHandler: () => {
-            if (FrontendMathParserExtension.checkForNullExpression()) {
-                HTMLFetcher.setExpression('(')
+            if (ButtonCollection.resultIsZero()) {
+                DOMAccessor.setExpression('(')
             } else {
-                HTMLFetcher.getExpression().append('(')
+                DOMAccessor.getExpression().append('(')
             }
         },
     })
@@ -111,9 +153,9 @@ export class ButtonCollection {
         keytype: ButtonType.SIMPLE_OPERATOR,
         funcHandler: () => {
             // eslint-disable-next-line no-empty
-            if (HTMLFetcher.getExpressionText().includes('.') || FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '.')) {
+            if (DOMAccessor.getExpressionText().includes('.') || ButtonCollection.checkCharacterIsNotARepeat(DOMAccessor.getExpressionText(), '.')) {
             } else {
-                HTMLFetcher.getExpression().append('.')
+                DOMAccessor.getExpression().append('.')
             }
         },
     })
@@ -127,8 +169,8 @@ export class ButtonCollection {
         btnColors: ButtonColor.ADVANCED_OPERATOR,
         keytype: ButtonType.ADVANCED_OPERATOR,
         funcHandler: () => {
-            if (FrontendMathParserExtension.checkClosingParenthesesIsAllowed(HTMLFetcher.getExpressionText())) {
-                HTMLFetcher.getExpression().append(')')
+            if (ButtonCollection.checkClosingParenthesesIsAllowed(DOMAccessor.getExpressionText())) {
+                DOMAccessor.getExpression().append(')')
             }
         },
     })
@@ -142,7 +184,7 @@ export class ButtonCollection {
         btnColors: ButtonColor.NUMBER,
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
-            numberInput('0')
+            ButtonCollection.numberInput('0')
         },
     })
 
@@ -155,7 +197,7 @@ export class ButtonCollection {
         btnColors: ButtonColor.NUMBER,
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
-            numberInput('1')
+            ButtonCollection.numberInput('1')
         },
     })
 
@@ -168,7 +210,7 @@ export class ButtonCollection {
         btnColors: ButtonColor.NUMBER,
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
-            numberInput('2')
+            ButtonCollection.numberInput('2')
         },
     })
 
@@ -181,7 +223,7 @@ export class ButtonCollection {
         btnColors: ButtonColor.NUMBER,
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
-            numberInput('3')
+            ButtonCollection.numberInput('3')
         },
     })
 
@@ -194,7 +236,7 @@ export class ButtonCollection {
         btnColors: ButtonColor.NUMBER,
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
-            numberInput('4')
+            ButtonCollection.numberInput('4')
         },
     })
 
@@ -207,7 +249,7 @@ export class ButtonCollection {
         btnColors: ButtonColor.NUMBER,
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
-            numberInput('5')
+            ButtonCollection.numberInput('5')
         },
     })
 
@@ -220,7 +262,7 @@ export class ButtonCollection {
         btnColors: ButtonColor.NUMBER,
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
-            numberInput('6')
+            ButtonCollection.numberInput('6')
         },
     })
 
@@ -233,7 +275,7 @@ export class ButtonCollection {
         btnColors: ButtonColor.NUMBER,
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
-            numberInput('7')
+            ButtonCollection.numberInput('7')
         },
     })
 
@@ -246,7 +288,7 @@ export class ButtonCollection {
         btnColors: ButtonColor.NUMBER,
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
-            numberInput('8')
+            ButtonCollection.numberInput('8')
         },
     })
 
@@ -259,7 +301,7 @@ export class ButtonCollection {
         btnColors: ButtonColor.NUMBER,
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
-            numberInput('9')
+            ButtonCollection.numberInput('9')
         },
     })
 
@@ -273,8 +315,8 @@ export class ButtonCollection {
         keytype: ButtonType.SIMPLE_OPERATOR,
         funcHandler: () => {
             // TODO: See todo-multiply
-            if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '+')) {
-                HTMLFetcher.getExpression().append('+')
+            if (!ButtonCollection.checkCharacterIsNotARepeat(DOMAccessor.getExpressionText(), '+')) {
+                DOMAccessor.getExpression().append('+')
             }
         },
     })
@@ -289,11 +331,11 @@ export class ButtonCollection {
         keytype: ButtonType.SIMPLE_OPERATOR,
         funcHandler: () => {
             // TODO: after minus, only numbers allowed
-            if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '-')) {
-                if (FrontendMathParserExtension.checkForNullExpression()) {
-                    HTMLFetcher.setExpression('-')
+            if (!ButtonCollection.checkCharacterIsNotARepeat(DOMAccessor.getExpressionText(), '-')) {
+                if (ButtonCollection.resultIsZero()) {
+                    DOMAccessor.setExpression('-')
                 } else {
-                    HTMLFetcher.getExpression().append('-')
+                    DOMAccessor.getExpression().append('-')
                 }
             }
         },
@@ -309,8 +351,8 @@ export class ButtonCollection {
         keytype: ButtonType.SIMPLE_OPERATOR,
         funcHandler: () => {
             // TODO: See todo-multiply
-            if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '/')) {
-                HTMLFetcher.getExpression().append('/')
+            if (!ButtonCollection.checkCharacterIsNotARepeat(DOMAccessor.getExpressionText(), '/')) {
+                DOMAccessor.getExpression().append('/')
             }
         },
     })
@@ -325,8 +367,8 @@ export class ButtonCollection {
         keytype: ButtonType.SIMPLE_OPERATOR,
         funcHandler: () => {
             // TODO: After multiply, only number or minus if times, divide or +, replace multiply sign
-            if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '*')) {
-                HTMLFetcher.getExpression().append('*')
+            if (!ButtonCollection.checkCharacterIsNotARepeat(DOMAccessor.getExpressionText(), '*')) {
+                DOMAccessor.getExpression().append('*')
             }
         },
     })
@@ -340,8 +382,8 @@ export class ButtonCollection {
         btnColors: ButtonColor.SIMPLE_OPERATOR,
         keytype: ButtonType.SIMPLE_OPERATOR,
         funcHandler: () => {
-            if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '%')) {
-                HTMLFetcher.getExpression().append('%')
+            if (!ButtonCollection.checkCharacterIsNotARepeat(DOMAccessor.getExpressionText(), '%')) {
+                DOMAccessor.getExpression().append('%')
             }
         },
     })
@@ -355,7 +397,7 @@ export class ButtonCollection {
         btnColors: ButtonColor.ACTION,
         keytype: ButtonType.ACTION,
         funcHandler: () => {
-            HTMLFetcher.setExpression(HTMLFetcher.getExpressionText().slice(0, -1))
+            DOMAccessor.setExpression(DOMAccessor.getExpressionText().slice(0, -1))
         },
     })
 
@@ -368,7 +410,7 @@ export class ButtonCollection {
         btnColors: ButtonColor.ADVANCED_OPERATOR,
         keytype: ButtonType.ADVANCED_OPERATOR,
         funcHandler: () => {
-            HTMLFetcher.getExpression().append('<')
+            DOMAccessor.getExpression().append('<')
         },
     })
 
@@ -381,7 +423,7 @@ export class ButtonCollection {
         btnColors: ButtonColor.ADVANCED_OPERATOR,
         keytype: ButtonType.ADVANCED_OPERATOR,
         funcHandler: () => {
-            HTMLFetcher.getExpression().append('>')
+            DOMAccessor.getExpression().append('>')
         },
     })
 
@@ -394,7 +436,7 @@ export class ButtonCollection {
         btnColors: ButtonColor.ADVANCED_OPERATOR,
         keytype: ButtonType.ADVANCED_OPERATOR,
         funcHandler: () => {
-            HTMLFetcher.getExpression().append('<=')
+            DOMAccessor.getExpression().append('<=')
         },
     })
 
@@ -407,7 +449,7 @@ export class ButtonCollection {
         btnColors: ButtonColor.ADVANCED_OPERATOR,
         keytype: ButtonType.ADVANCED_OPERATOR,
         funcHandler: () => {
-            HTMLFetcher.getExpression().append('>=')
+            DOMAccessor.getExpression().append('>=')
         },
     })
 
@@ -420,8 +462,8 @@ export class ButtonCollection {
         btnColors: ButtonColor.ADVANCED_OPERATOR,
         keytype: ButtonType.ADVANCED_OPERATOR,
         funcHandler: () => {
-            if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '^')) {
-                HTMLFetcher.getExpression().append('^')
+            if (!ButtonCollection.checkCharacterIsNotARepeat(DOMAccessor.getExpressionText(), '^')) {
+                DOMAccessor.getExpression().append('^')
             }
         },
     })
@@ -435,10 +477,10 @@ export class ButtonCollection {
         btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: ButtonType.COMPLEX_OPERATOR,
         funcHandler: () => {
-            if (!FrontendMathParserExtension.checkForNullExpression()) {
-                HTMLFetcher.setExpression(`ln(${HTMLFetcher.getExpressionText()})`)
+            if (!ButtonCollection.resultIsZero()) {
+                DOMAccessor.setExpression(`ln(${DOMAccessor.getExpressionText()})`)
             } else {
-                HTMLFetcher.setExpression('ln(')
+                DOMAccessor.setExpression('ln(')
             }
         },
     })
@@ -452,10 +494,10 @@ export class ButtonCollection {
         btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: ButtonType.COMPLEX_OPERATOR,
         funcHandler: () => {
-            if (!FrontendMathParserExtension.checkForNullExpression()) {
-                HTMLFetcher.setExpression(`log(${HTMLFetcher.getExpressionText()})`)
+            if (!ButtonCollection.resultIsZero()) {
+                DOMAccessor.setExpression(`log(${DOMAccessor.getExpressionText()})`)
             } else {
-                HTMLFetcher.setExpression('log(')
+                DOMAccessor.setExpression('log(')
             }
         },
     })
@@ -469,7 +511,7 @@ export class ButtonCollection {
         btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: ButtonType.COMPLEX_OPERATOR,
         funcHandler: () => {
-            HTMLFetcher.getExpression().append('!')
+            DOMAccessor.getExpression().append('!')
         },
     })
 
@@ -482,10 +524,10 @@ export class ButtonCollection {
         btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: ButtonType.COMPLEX_OPERATOR,
         funcHandler: () => {
-            if (!FrontendMathParserExtension.checkForNullExpression()) {
-                HTMLFetcher.setExpression(`sqrt(${HTMLFetcher.getExpressionText()})`)
+            if (!ButtonCollection.resultIsZero()) {
+                DOMAccessor.setExpression(`sqrt(${DOMAccessor.getExpressionText()})`)
             } else {
-                HTMLFetcher.setExpression('sqrt(')
+                DOMAccessor.setExpression('sqrt(')
             }
         },
     })
@@ -525,10 +567,10 @@ export class ButtonCollection {
         btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: ButtonType.COMPLEX_OPERATOR,
         funcHandler: () => {
-            if (!FrontendMathParserExtension.checkForNullExpression()) {
-                HTMLFetcher.setExpression(`cos(${HTMLFetcher.getExpressionText()})`)
+            if (!ButtonCollection.resultIsZero()) {
+                DOMAccessor.setExpression(`cos(${DOMAccessor.getExpressionText()})`)
             } else {
-                HTMLFetcher.setExpression('cos(')
+                DOMAccessor.setExpression('cos(')
             }
         },
     })
@@ -542,10 +584,10 @@ export class ButtonCollection {
         btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: ButtonType.COMPLEX_OPERATOR,
         funcHandler: () => {
-            if (!FrontendMathParserExtension.checkForNullExpression()) {
-                HTMLFetcher.setExpression(`sin(${HTMLFetcher.getExpressionText()})`)
+            if (!ButtonCollection.resultIsZero()) {
+                DOMAccessor.setExpression(`sin(${DOMAccessor.getExpressionText()})`)
             } else {
-                HTMLFetcher.setExpression('sin(')
+                DOMAccessor.setExpression('sin(')
             }
         },
     })
@@ -559,10 +601,10 @@ export class ButtonCollection {
         btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: ButtonType.COMPLEX_OPERATOR,
         funcHandler: () => {
-            if (!FrontendMathParserExtension.checkForNullExpression()) {
-                HTMLFetcher.setExpression(`tan(${HTMLFetcher.getExpressionText()})`)
+            if (!ButtonCollection.resultIsZero()) {
+                DOMAccessor.setExpression(`tan(${DOMAccessor.getExpressionText()})`)
             } else {
-                HTMLFetcher.setExpression('tan(')
+                DOMAccessor.setExpression('tan(')
             }
         },
     })
@@ -576,7 +618,7 @@ export class ButtonCollection {
         btnColors: ButtonColor.CONSTANT,
         keytype: ButtonType.CONSTANT,
         funcHandler: () => {
-            HTMLFetcher.getExpression().append('e')
+            DOMAccessor.getExpression().append('e')
         },
     })
 
@@ -589,7 +631,7 @@ export class ButtonCollection {
         btnColors: ButtonColor.CONSTANT,
         keytype: ButtonType.CONSTANT,
         funcHandler: () => {
-            HTMLFetcher.getExpression().append('pi')
+            DOMAccessor.getExpression().append('pi')
         },
     })
 }
