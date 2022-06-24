@@ -4,7 +4,7 @@ export default class FrontendMathParserExtension {
     public static evaluateExpression(): void {
         /** Checks to see if the expression contains equality operators
          *  - and if so converts and returns the result as a boolean value
-         *  - and if not returns the results
+         *  - and if not return the results
          *  - and if the evaluation fails because of an improper expression-string
          *    it returns a localized word for error
          */
@@ -19,7 +19,6 @@ export default class FrontendMathParserExtension {
             HTMLFetcher.getResult().innerHTML = 'Fejl'
         }
     }
-
     public static checkForNullExpression(): boolean {
         return HTMLFetcher.getExpressionText() === '0'
     }

@@ -1,24 +1,69 @@
+import flashAnimation from './animate.js';
 import { ButtonCollection } from './calculator-button.js';
 var InputController = (function () {
     function InputController(cusorPosition) {
         if (cusorPosition === void 0) { cusorPosition = 0; }
         this.cursorPosition = cusorPosition;
     }
-    InputController.prototype.getButtonFromKeyInput = function (key) {
-        InputController.BUTTON_COLLECTION.forEach(function (button) {
-            if (button.shortcut.length > 0 && key in button.shortcut) {
+    InputController.inputSwitch = function (key) {
+        var dataAttribute = InputController.getDataAttributeFromKeyInput(key);
+        if (dataAttribute !== null && dataAttribute !== undefined) {
+            flashAnimation(dataAttribute);
+        }
+        var keys = InputController.getShortcutsFromKeyInput(key);
+        if (keys) {
+            console.log(key, keys);
+            var btn = InputController.getButtonFromKeyInput(key);
+            btn.funcHandler();
+        }
+        else {
+            console.warn('Calculator key not recognized');
+        }
+    };
+    InputController.setupEventListeners = function () {
+        var _loop_1 = function (iter) {
+            var handle = InputController.BUTTON_COLLECTION[iter];
+            try {
+                if (handle !== undefined && handle !== null) {
+                    var button = document.querySelector(handle.xdata);
+                    button.innerHTML = handle.display;
+                    console.warn('xdata:', handle.xdata, document.querySelector(handle.xdata));
+                    button.addEventListener('click', function () {
+                        console.info("Clicked: ".concat(handle.value));
+                        InputController.inputSwitch(handle.value);
+                    }, false);
+                }
+            }
+            catch (error) {
+                throw Error("A query for an element with attribute \"".concat(handle.xdata, "\" returned 'null' or 'undefined'.\nError: ").concat(error));
+            }
+        };
+        for (var iter = 0; iter < InputController.BUTTON_COLLECTION.length; iter += 1) {
+            _loop_1(iter);
+        }
+        document.body.addEventListener('keydown', function (e) {
+            console.log("Pressed: ".concat(e.key));
+            InputController.inputSwitch(e.key);
+        }, false);
+    };
+    InputController.getButtonFromKeyInput = function (key) {
+        for (var _i = 0, _a = InputController.BUTTON_COLLECTION; _i < _a.length; _i++) {
+            var button = _a[_i];
+            if ((button.shortcut.length > 0 && key in button.shortcut) || key === button.value) {
+                console.log("Returning button: ".concat(button));
                 return button;
             }
-        });
+        }
     };
-    InputController.prototype.getShortcutsFromKeyInput = function (key) {
+    InputController.getShortcutsFromKeyInput = function (key) {
         InputController.BUTTON_COLLECTION.forEach(function (button) {
-            if (button.shortcut.length > 0 && button.shortcut.includes(key)) {
+            if ((button.shortcut.length > 0 && button.shortcut.includes(key)) || key === button.value) {
+                console.log("Returning btn.shortcuts: ".concat(button.shortcut));
                 return button.shortcut;
             }
         });
     };
-    InputController.prototype.getDataAttributeFromKeyInput = function (key) {
+    InputController.getDataAttributeFromKeyInput = function (key) {
         for (var _i = 0, _a = InputController.BUTTON_COLLECTION; _i < _a.length; _i++) {
             var button = _a[_i];
             if (button.value === key || button.display === key) {

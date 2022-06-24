@@ -11,14 +11,12 @@ const enum ButtonType {
     COMPLEX_OPERATOR = '[data-complexoperator]',
 }
 class ButtonColor {
-    buttonColors: { [buttonType: string]: [bgColor: string, hoverBgColor: string] } = {
-        NUMBER: ['blue', 'darkblue'],
-        CONSTANT: ['purple', 'darkpurple'],
-        ACTION: ['green', 'darkgreen'],
-        SIMPLE_OPERATOR: ['yellow', 'darkyellow'],
-        ADVANCED_OPERATOR: ['orange', 'darkorange'],
-        COMPLEX_OPERATOR: ['cyan', 'darkcyan'],
-    }
+    public static NUMBER: [string, string] = ['blue', 'darkblue']
+    public static CONSTANT: [string, string] = ['purple', 'darkpurple']
+    public static ACTION: [string, string] = ['green', 'darkgreen']
+    public static SIMPLE_OPERATOR: [string, string] = ['yellow', 'darkyellow']
+    public static ADVANCED_OPERATOR: [string, string] = ['orange', 'darkorange']
+    public static COMPLEX_OPERATOR: [string, string] = ['cyan', 'darkcyan']
 }
 type ButtonInterface = {
     name: string
@@ -27,30 +25,26 @@ type ButtonInterface = {
     display: string
     shortcut: string[]
     keytype: ButtonType
+    btnColors: ButtonColor
     funcHandler: CallableFunction
 }
 export class Button {
     public name: string
-
     public xdata: string
-
     public value: string
-
     public display: string
-
     public shortcut: string[]
-
     public keytype: ButtonType
-
+    public btnColors: ButtonColor
     public funcHandler: CallableFunction
-
-    public constructor({ name, xdata, value, display, shortcut, keytype, funcHandler }: ButtonInterface) {
+    public constructor({ name, xdata, value, display, shortcut, keytype, btnColors, funcHandler }: ButtonInterface) {
         this.name = name
         this.xdata = xdata
         this.value = value
         this.display = display
         this.shortcut = shortcut
         this.keytype = keytype
+        this.btnColors = btnColors
         this.funcHandler = funcHandler
     }
 }
@@ -69,6 +63,7 @@ export class ButtonCollection {
         value: 'ac',
         display: 'AC',
         shortcut: ['Escape', 'Delete'],
+        btnColors: ButtonColor.ACTION,
         keytype: ButtonType.ACTION,
         funcHandler: () => {
             HTMLFetcher.setExpression('0')
@@ -82,6 +77,7 @@ export class ButtonCollection {
         value: '=',
         display: '=',
         shortcut: ['=', 'Enter'],
+        btnColors: ButtonColor.ACTION,
         keytype: ButtonType.ACTION,
         funcHandler: () => {
             FrontendMathParserExtension.evaluateExpression()
@@ -94,6 +90,7 @@ export class ButtonCollection {
         value: '(',
         display: '(',
         shortcut: ['('],
+        btnColors: ButtonColor.ADVANCED_OPERATOR,
         keytype: ButtonType.ADVANCED_OPERATOR,
         funcHandler: () => {
             if (FrontendMathParserExtension.checkForNullExpression()) {
@@ -110,6 +107,7 @@ export class ButtonCollection {
         value: '.',
         display: '.',
         shortcut: ['.', ','],
+        btnColors: ButtonColor.SIMPLE_OPERATOR,
         keytype: ButtonType.SIMPLE_OPERATOR,
         funcHandler: () => {
             // eslint-disable-next-line no-empty
@@ -126,6 +124,7 @@ export class ButtonCollection {
         value: ')',
         display: ')',
         shortcut: [')'],
+        btnColors: ButtonColor.ADVANCED_OPERATOR,
         keytype: ButtonType.ADVANCED_OPERATOR,
         funcHandler: () => {
             if (FrontendMathParserExtension.checkClosingParenthesesIsAllowed(HTMLFetcher.getExpressionText())) {
@@ -140,6 +139,7 @@ export class ButtonCollection {
         value: '0',
         display: '0',
         shortcut: ['0'],
+        btnColors: ButtonColor.NUMBER,
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
             numberInput('0')
@@ -152,6 +152,7 @@ export class ButtonCollection {
         value: '1',
         display: '1',
         shortcut: ['1'],
+        btnColors: ButtonColor.NUMBER,
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
             numberInput('1')
@@ -164,6 +165,7 @@ export class ButtonCollection {
         value: '2',
         display: '2',
         shortcut: ['2'],
+        btnColors: ButtonColor.NUMBER,
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
             numberInput('2')
@@ -176,6 +178,7 @@ export class ButtonCollection {
         value: '3',
         display: '3',
         shortcut: ['3'],
+        btnColors: ButtonColor.NUMBER,
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
             numberInput('3')
@@ -188,6 +191,7 @@ export class ButtonCollection {
         value: '4',
         display: '4',
         shortcut: ['4'],
+        btnColors: ButtonColor.NUMBER,
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
             numberInput('4')
@@ -200,6 +204,7 @@ export class ButtonCollection {
         value: '5',
         display: '5',
         shortcut: ['5'],
+        btnColors: ButtonColor.NUMBER,
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
             numberInput('5')
@@ -212,6 +217,7 @@ export class ButtonCollection {
         value: '6',
         display: '6',
         shortcut: ['6'],
+        btnColors: ButtonColor.NUMBER,
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
             numberInput('6')
@@ -224,6 +230,7 @@ export class ButtonCollection {
         value: '7',
         display: '7',
         shortcut: ['7'],
+        btnColors: ButtonColor.NUMBER,
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
             numberInput('7')
@@ -236,6 +243,7 @@ export class ButtonCollection {
         value: '8',
         display: '8',
         shortcut: ['8'],
+        btnColors: ButtonColor.NUMBER,
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
             numberInput('8')
@@ -248,6 +256,7 @@ export class ButtonCollection {
         value: '9',
         display: '9',
         shortcut: ['9'],
+        btnColors: ButtonColor.NUMBER,
         keytype: ButtonType.NUMBER,
         funcHandler: () => {
             numberInput('9')
@@ -260,6 +269,7 @@ export class ButtonCollection {
         value: '+',
         display: '+',
         shortcut: ['+'],
+        btnColors: ButtonColor.SIMPLE_OPERATOR,
         keytype: ButtonType.SIMPLE_OPERATOR,
         funcHandler: () => {
             // TODO: See todo-multiply
@@ -275,6 +285,7 @@ export class ButtonCollection {
         value: '-',
         display: '-',
         shortcut: ['-'],
+        btnColors: ButtonColor.SIMPLE_OPERATOR,
         keytype: ButtonType.SIMPLE_OPERATOR,
         funcHandler: () => {
             // TODO: after minus, only numbers allowed
@@ -294,6 +305,7 @@ export class ButtonCollection {
         value: '/',
         display: '/',
         shortcut: ['/'],
+        btnColors: ButtonColor.SIMPLE_OPERATOR,
         keytype: ButtonType.SIMPLE_OPERATOR,
         funcHandler: () => {
             // TODO: See todo-multiply
@@ -309,6 +321,7 @@ export class ButtonCollection {
         value: '*',
         display: '*',
         shortcut: ['*'],
+        btnColors: ButtonColor.SIMPLE_OPERATOR,
         keytype: ButtonType.SIMPLE_OPERATOR,
         funcHandler: () => {
             // TODO: After multiply, only number or minus if times, divide or +, replace multiply sign
@@ -324,6 +337,7 @@ export class ButtonCollection {
         value: '%',
         display: '&percnt;',
         shortcut: ['p'],
+        btnColors: ButtonColor.SIMPLE_OPERATOR,
         keytype: ButtonType.SIMPLE_OPERATOR,
         funcHandler: () => {
             if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '%')) {
@@ -338,6 +352,7 @@ export class ButtonCollection {
         value: 'Backspace',
         display: 'C',
         shortcut: ['Backspace', 'c'],
+        btnColors: ButtonColor.ACTION,
         keytype: ButtonType.ACTION,
         funcHandler: () => {
             HTMLFetcher.setExpression(HTMLFetcher.getExpressionText().slice(0, -1))
@@ -350,6 +365,7 @@ export class ButtonCollection {
         value: '<',
         display: '&lt;',
         shortcut: ['<'],
+        btnColors: ButtonColor.ADVANCED_OPERATOR,
         keytype: ButtonType.ADVANCED_OPERATOR,
         funcHandler: () => {
             HTMLFetcher.getExpression().append('<')
@@ -362,6 +378,7 @@ export class ButtonCollection {
         value: '>',
         display: '&gt;',
         shortcut: ['>'],
+        btnColors: ButtonColor.ADVANCED_OPERATOR,
         keytype: ButtonType.ADVANCED_OPERATOR,
         funcHandler: () => {
             HTMLFetcher.getExpression().append('>')
@@ -374,6 +391,7 @@ export class ButtonCollection {
         value: '<=',
         display: '&le;',
         shortcut: [],
+        btnColors: ButtonColor.ADVANCED_OPERATOR,
         keytype: ButtonType.ADVANCED_OPERATOR,
         funcHandler: () => {
             HTMLFetcher.getExpression().append('<=')
@@ -386,6 +404,7 @@ export class ButtonCollection {
         value: '>=',
         display: '&ge;',
         shortcut: [],
+        btnColors: ButtonColor.ADVANCED_OPERATOR,
         keytype: ButtonType.ADVANCED_OPERATOR,
         funcHandler: () => {
             HTMLFetcher.getExpression().append('>=')
@@ -398,6 +417,7 @@ export class ButtonCollection {
         value: '^',
         display: 'x<sup>y</sup>',
         shortcut: ['Dead', '^'],
+        btnColors: ButtonColor.ADVANCED_OPERATOR,
         keytype: ButtonType.ADVANCED_OPERATOR,
         funcHandler: () => {
             if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '^')) {
@@ -412,6 +432,7 @@ export class ButtonCollection {
         value: 'ln',
         display: 'Ln',
         shortcut: ['L'],
+        btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: ButtonType.COMPLEX_OPERATOR,
         funcHandler: () => {
             if (!FrontendMathParserExtension.checkForNullExpression()) {
@@ -428,6 +449,7 @@ export class ButtonCollection {
         value: 'log',
         display: 'log',
         shortcut: ['l'],
+        btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: ButtonType.COMPLEX_OPERATOR,
         funcHandler: () => {
             if (!FrontendMathParserExtension.checkForNullExpression()) {
@@ -444,6 +466,7 @@ export class ButtonCollection {
         value: '!',
         display: 'x!',
         shortcut: ['!'],
+        btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: ButtonType.COMPLEX_OPERATOR,
         funcHandler: () => {
             HTMLFetcher.getExpression().append('!')
@@ -456,6 +479,7 @@ export class ButtonCollection {
         value: 'sqrt',
         display: '&radic;',
         shortcut: ['r'],
+        btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: ButtonType.COMPLEX_OPERATOR,
         funcHandler: () => {
             if (!FrontendMathParserExtension.checkForNullExpression()) {
@@ -472,8 +496,11 @@ export class ButtonCollection {
         value: '',
         display: 'Cbrt',
         shortcut: [],
+        btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: ButtonType.COMPLEX_OPERATOR,
-        funcHandler: () => {},
+        funcHandler: () => {
+            //
+        },
     })
 
     public static ButtonNthRoot = new Button({
@@ -482,8 +509,11 @@ export class ButtonCollection {
         value: '',
         display: 'NthRt',
         shortcut: [],
+        btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: ButtonType.COMPLEX_OPERATOR,
-        funcHandler: () => {},
+        funcHandler: () => {
+            //
+        },
     })
 
     public static ButtonCosine = new Button({
@@ -492,6 +522,7 @@ export class ButtonCollection {
         value: 'cos',
         display: 'cos',
         shortcut: ['c'],
+        btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: ButtonType.COMPLEX_OPERATOR,
         funcHandler: () => {
             if (!FrontendMathParserExtension.checkForNullExpression()) {
@@ -508,6 +539,7 @@ export class ButtonCollection {
         value: 'sin',
         display: 'sin',
         shortcut: ['s'],
+        btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: ButtonType.COMPLEX_OPERATOR,
         funcHandler: () => {
             if (!FrontendMathParserExtension.checkForNullExpression()) {
@@ -524,6 +556,7 @@ export class ButtonCollection {
         value: 'tan',
         display: 'tan',
         shortcut: ['t'],
+        btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: ButtonType.COMPLEX_OPERATOR,
         funcHandler: () => {
             if (!FrontendMathParserExtension.checkForNullExpression()) {
@@ -540,6 +573,7 @@ export class ButtonCollection {
         value: 'e',
         display: 'e',
         shortcut: ['E'],
+        btnColors: ButtonColor.CONSTANT,
         keytype: ButtonType.CONSTANT,
         funcHandler: () => {
             HTMLFetcher.getExpression().append('e')
@@ -552,6 +586,7 @@ export class ButtonCollection {
         value: 'pi',
         display: '&pi;',
         shortcut: ['P'],
+        btnColors: ButtonColor.CONSTANT,
         keytype: ButtonType.CONSTANT,
         funcHandler: () => {
             HTMLFetcher.getExpression().append('pi')

@@ -2,26 +2,25 @@ import HTMLFetcher from './html-fetcher.js';
 import FrontendMathParserExtension from './frontend-mathparser-extension.js';
 var ButtonColor = (function () {
     function ButtonColor() {
-        this.buttonColors = {
-            NUMBER: ['blue', 'darkblue'],
-            CONSTANT: ['purple', 'darkpurple'],
-            ACTION: ['green', 'darkgreen'],
-            SIMPLE_OPERATOR: ['yellow', 'darkyellow'],
-            ADVANCED_OPERATOR: ['orange', 'darkorange'],
-            COMPLEX_OPERATOR: ['cyan', 'darkcyan'],
-        };
     }
+    ButtonColor.NUMBER = ['blue', 'darkblue'];
+    ButtonColor.CONSTANT = ['purple', 'darkpurple'];
+    ButtonColor.ACTION = ['green', 'darkgreen'];
+    ButtonColor.SIMPLE_OPERATOR = ['yellow', 'darkyellow'];
+    ButtonColor.ADVANCED_OPERATOR = ['orange', 'darkorange'];
+    ButtonColor.COMPLEX_OPERATOR = ['cyan', 'darkcyan'];
     return ButtonColor;
 }());
 var Button = (function () {
     function Button(_a) {
-        var name = _a.name, xdata = _a.xdata, value = _a.value, display = _a.display, shortcut = _a.shortcut, keytype = _a.keytype, funcHandler = _a.funcHandler;
+        var name = _a.name, xdata = _a.xdata, value = _a.value, display = _a.display, shortcut = _a.shortcut, keytype = _a.keytype, btnColors = _a.btnColors, funcHandler = _a.funcHandler;
         this.name = name;
         this.xdata = xdata;
         this.value = value;
         this.display = display;
         this.shortcut = shortcut;
         this.keytype = keytype;
+        this.btnColors = btnColors;
         this.funcHandler = funcHandler;
     }
     return Button;
@@ -44,6 +43,7 @@ var ButtonCollection = (function () {
         value: 'ac',
         display: 'AC',
         shortcut: ['Escape', 'Delete'],
+        btnColors: ButtonColor.ACTION,
         keytype: "[data-action]",
         funcHandler: function () {
             HTMLFetcher.setExpression('0');
@@ -56,6 +56,7 @@ var ButtonCollection = (function () {
         value: '=',
         display: '=',
         shortcut: ['=', 'Enter'],
+        btnColors: ButtonColor.ACTION,
         keytype: "[data-action]",
         funcHandler: function () {
             FrontendMathParserExtension.evaluateExpression();
@@ -67,6 +68,7 @@ var ButtonCollection = (function () {
         value: '(',
         display: '(',
         shortcut: ['('],
+        btnColors: ButtonColor.ADVANCED_OPERATOR,
         keytype: "[data-advancedoperator]",
         funcHandler: function () {
             if (FrontendMathParserExtension.checkForNullExpression()) {
@@ -83,6 +85,7 @@ var ButtonCollection = (function () {
         value: '.',
         display: '.',
         shortcut: ['.', ','],
+        btnColors: ButtonColor.SIMPLE_OPERATOR,
         keytype: "[data-simpleoperator]",
         funcHandler: function () {
             if (HTMLFetcher.getExpressionText().includes('.') || FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '.')) {
@@ -98,6 +101,7 @@ var ButtonCollection = (function () {
         value: ')',
         display: ')',
         shortcut: [')'],
+        btnColors: ButtonColor.ADVANCED_OPERATOR,
         keytype: "[data-advancedoperator]",
         funcHandler: function () {
             if (FrontendMathParserExtension.checkClosingParenthesesIsAllowed(HTMLFetcher.getExpressionText())) {
@@ -111,6 +115,7 @@ var ButtonCollection = (function () {
         value: '0',
         display: '0',
         shortcut: ['0'],
+        btnColors: ButtonColor.NUMBER,
         keytype: "[data-number]",
         funcHandler: function () {
             numberInput('0');
@@ -122,6 +127,7 @@ var ButtonCollection = (function () {
         value: '1',
         display: '1',
         shortcut: ['1'],
+        btnColors: ButtonColor.NUMBER,
         keytype: "[data-number]",
         funcHandler: function () {
             numberInput('1');
@@ -133,6 +139,7 @@ var ButtonCollection = (function () {
         value: '2',
         display: '2',
         shortcut: ['2'],
+        btnColors: ButtonColor.NUMBER,
         keytype: "[data-number]",
         funcHandler: function () {
             numberInput('2');
@@ -144,6 +151,7 @@ var ButtonCollection = (function () {
         value: '3',
         display: '3',
         shortcut: ['3'],
+        btnColors: ButtonColor.NUMBER,
         keytype: "[data-number]",
         funcHandler: function () {
             numberInput('3');
@@ -155,6 +163,7 @@ var ButtonCollection = (function () {
         value: '4',
         display: '4',
         shortcut: ['4'],
+        btnColors: ButtonColor.NUMBER,
         keytype: "[data-number]",
         funcHandler: function () {
             numberInput('4');
@@ -166,6 +175,7 @@ var ButtonCollection = (function () {
         value: '5',
         display: '5',
         shortcut: ['5'],
+        btnColors: ButtonColor.NUMBER,
         keytype: "[data-number]",
         funcHandler: function () {
             numberInput('5');
@@ -177,6 +187,7 @@ var ButtonCollection = (function () {
         value: '6',
         display: '6',
         shortcut: ['6'],
+        btnColors: ButtonColor.NUMBER,
         keytype: "[data-number]",
         funcHandler: function () {
             numberInput('6');
@@ -188,6 +199,7 @@ var ButtonCollection = (function () {
         value: '7',
         display: '7',
         shortcut: ['7'],
+        btnColors: ButtonColor.NUMBER,
         keytype: "[data-number]",
         funcHandler: function () {
             numberInput('7');
@@ -199,6 +211,7 @@ var ButtonCollection = (function () {
         value: '8',
         display: '8',
         shortcut: ['8'],
+        btnColors: ButtonColor.NUMBER,
         keytype: "[data-number]",
         funcHandler: function () {
             numberInput('8');
@@ -210,6 +223,7 @@ var ButtonCollection = (function () {
         value: '9',
         display: '9',
         shortcut: ['9'],
+        btnColors: ButtonColor.NUMBER,
         keytype: "[data-number]",
         funcHandler: function () {
             numberInput('9');
@@ -221,6 +235,7 @@ var ButtonCollection = (function () {
         value: '+',
         display: '+',
         shortcut: ['+'],
+        btnColors: ButtonColor.SIMPLE_OPERATOR,
         keytype: "[data-simpleoperator]",
         funcHandler: function () {
             if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '+')) {
@@ -234,6 +249,7 @@ var ButtonCollection = (function () {
         value: '-',
         display: '-',
         shortcut: ['-'],
+        btnColors: ButtonColor.SIMPLE_OPERATOR,
         keytype: "[data-simpleoperator]",
         funcHandler: function () {
             if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '-')) {
@@ -252,6 +268,7 @@ var ButtonCollection = (function () {
         value: '/',
         display: '/',
         shortcut: ['/'],
+        btnColors: ButtonColor.SIMPLE_OPERATOR,
         keytype: "[data-simpleoperator]",
         funcHandler: function () {
             if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '/')) {
@@ -265,6 +282,7 @@ var ButtonCollection = (function () {
         value: '*',
         display: '*',
         shortcut: ['*'],
+        btnColors: ButtonColor.SIMPLE_OPERATOR,
         keytype: "[data-simpleoperator]",
         funcHandler: function () {
             if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '*')) {
@@ -278,6 +296,7 @@ var ButtonCollection = (function () {
         value: '%',
         display: '&percnt;',
         shortcut: ['p'],
+        btnColors: ButtonColor.SIMPLE_OPERATOR,
         keytype: "[data-simpleoperator]",
         funcHandler: function () {
             if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '%')) {
@@ -291,6 +310,7 @@ var ButtonCollection = (function () {
         value: 'Backspace',
         display: 'C',
         shortcut: ['Backspace', 'c'],
+        btnColors: ButtonColor.ACTION,
         keytype: "[data-action]",
         funcHandler: function () {
             HTMLFetcher.setExpression(HTMLFetcher.getExpressionText().slice(0, -1));
@@ -302,6 +322,7 @@ var ButtonCollection = (function () {
         value: '<',
         display: '&lt;',
         shortcut: ['<'],
+        btnColors: ButtonColor.ADVANCED_OPERATOR,
         keytype: "[data-advancedoperator]",
         funcHandler: function () {
             HTMLFetcher.getExpression().append('<');
@@ -313,6 +334,7 @@ var ButtonCollection = (function () {
         value: '>',
         display: '&gt;',
         shortcut: ['>'],
+        btnColors: ButtonColor.ADVANCED_OPERATOR,
         keytype: "[data-advancedoperator]",
         funcHandler: function () {
             HTMLFetcher.getExpression().append('>');
@@ -324,6 +346,7 @@ var ButtonCollection = (function () {
         value: '<=',
         display: '&le;',
         shortcut: [],
+        btnColors: ButtonColor.ADVANCED_OPERATOR,
         keytype: "[data-advancedoperator]",
         funcHandler: function () {
             HTMLFetcher.getExpression().append('<=');
@@ -335,6 +358,7 @@ var ButtonCollection = (function () {
         value: '>=',
         display: '&ge;',
         shortcut: [],
+        btnColors: ButtonColor.ADVANCED_OPERATOR,
         keytype: "[data-advancedoperator]",
         funcHandler: function () {
             HTMLFetcher.getExpression().append('>=');
@@ -346,6 +370,7 @@ var ButtonCollection = (function () {
         value: '^',
         display: 'x<sup>y</sup>',
         shortcut: ['Dead', '^'],
+        btnColors: ButtonColor.ADVANCED_OPERATOR,
         keytype: "[data-advancedoperator]",
         funcHandler: function () {
             if (!FrontendMathParserExtension.checkCharacterIsNotARepeat(HTMLFetcher.getExpressionText(), '^')) {
@@ -359,6 +384,7 @@ var ButtonCollection = (function () {
         value: 'ln',
         display: 'Ln',
         shortcut: ['L'],
+        btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: "[data-complexoperator]",
         funcHandler: function () {
             if (!FrontendMathParserExtension.checkForNullExpression()) {
@@ -375,6 +401,7 @@ var ButtonCollection = (function () {
         value: 'log',
         display: 'log',
         shortcut: ['l'],
+        btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: "[data-complexoperator]",
         funcHandler: function () {
             if (!FrontendMathParserExtension.checkForNullExpression()) {
@@ -391,6 +418,7 @@ var ButtonCollection = (function () {
         value: '!',
         display: 'x!',
         shortcut: ['!'],
+        btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: "[data-complexoperator]",
         funcHandler: function () {
             HTMLFetcher.getExpression().append('!');
@@ -402,6 +430,7 @@ var ButtonCollection = (function () {
         value: 'sqrt',
         display: '&radic;',
         shortcut: ['r'],
+        btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: "[data-complexoperator]",
         funcHandler: function () {
             if (!FrontendMathParserExtension.checkForNullExpression()) {
@@ -418,8 +447,10 @@ var ButtonCollection = (function () {
         value: '',
         display: 'Cbrt',
         shortcut: [],
+        btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: "[data-complexoperator]",
-        funcHandler: function () { },
+        funcHandler: function () {
+        },
     });
     ButtonCollection.ButtonNthRoot = new Button({
         name: 'Nth Root',
@@ -427,8 +458,10 @@ var ButtonCollection = (function () {
         value: '',
         display: 'NthRt',
         shortcut: [],
+        btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: "[data-complexoperator]",
-        funcHandler: function () { },
+        funcHandler: function () {
+        },
     });
     ButtonCollection.ButtonCosine = new Button({
         name: 'Cosine',
@@ -436,6 +469,7 @@ var ButtonCollection = (function () {
         value: 'cos',
         display: 'cos',
         shortcut: ['c'],
+        btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: "[data-complexoperator]",
         funcHandler: function () {
             if (!FrontendMathParserExtension.checkForNullExpression()) {
@@ -452,6 +486,7 @@ var ButtonCollection = (function () {
         value: 'sin',
         display: 'sin',
         shortcut: ['s'],
+        btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: "[data-complexoperator]",
         funcHandler: function () {
             if (!FrontendMathParserExtension.checkForNullExpression()) {
@@ -468,6 +503,7 @@ var ButtonCollection = (function () {
         value: 'tan',
         display: 'tan',
         shortcut: ['t'],
+        btnColors: ButtonColor.COMPLEX_OPERATOR,
         keytype: "[data-complexoperator]",
         funcHandler: function () {
             if (!FrontendMathParserExtension.checkForNullExpression()) {
@@ -484,6 +520,7 @@ var ButtonCollection = (function () {
         value: 'e',
         display: 'e',
         shortcut: ['E'],
+        btnColors: ButtonColor.CONSTANT,
         keytype: "[data-constant]",
         funcHandler: function () {
             HTMLFetcher.getExpression().append('e');
@@ -495,6 +532,7 @@ var ButtonCollection = (function () {
         value: 'pi',
         display: '&pi;',
         shortcut: ['P'],
+        btnColors: ButtonColor.CONSTANT,
         keytype: "[data-constant]",
         funcHandler: function () {
             HTMLFetcher.getExpression().append('pi');
