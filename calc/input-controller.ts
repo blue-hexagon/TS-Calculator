@@ -74,7 +74,7 @@ export default class InputController {
                     button!.addEventListener(
                         'click',
                         () => {
-                            console.info(`Clicked: ${handle.value}`)
+                            console.debug(`Clicked: ${handle.value}`)
                             // handle.funcHandler();
                             InputController.inputSwitch(handle.value)
                         },
@@ -89,8 +89,7 @@ export default class InputController {
         document.body.addEventListener(
             'keydown',
             e => {
-                console.log(`Pressed: ${e.key}`)
-                // handle.funcHandler();
+                console.debug(`Pressed: ${e.key}`)
                 InputController.inputSwitch(e.key)
             },
             false,
@@ -98,8 +97,7 @@ export default class InputController {
     }
     public static getButtonFromKeyInput(key: string): Button | void {
         for (const button of InputController.BUTTON_COLLECTION) {
-            if ((button.shortcut.length > 0 && key in button.shortcut) || key === button.value) {
-                console.log(`Returning button: ${button}`)
+            if ((button.shortcut.length > 0 && button.shortcut.includes(key)) || key === button.value) {
                 return button
             }
         }
@@ -108,7 +106,6 @@ export default class InputController {
     public static getShortcutsFromKeyInput(key: string): string[] | [] | void {
         InputController.BUTTON_COLLECTION.forEach(button => {
             if ((button.shortcut.length > 0 && button.shortcut.includes(key)) || key === button.value) {
-                console.log(`Returning btn.shortcuts: ${button.shortcut}`)
                 return button.shortcut
             }
         })

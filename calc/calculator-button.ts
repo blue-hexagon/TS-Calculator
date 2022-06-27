@@ -90,12 +90,12 @@ export class ButtonCollection {
         try {
             const result = String(math.round(math.evaluate(DOMAccessor.getExpression().textContent as string), 10))
             if (DOMAccessor.getExpressionText.toString().search('/(<=|<|=>|>)+/') >= 0) {
-                DOMAccessor.getResult().innerHTML = String(Boolean(result))
+                DOMAccessor.setResult(String(Boolean(result)))
             } else {
-                DOMAccessor.getResult().innerHTML = result
+                DOMAccessor.setResult(result)
             }
         } catch {
-            DOMAccessor.getResult().innerHTML = 'Fejl'
+            DOMAccessor.setResult('Error')
         }
     }
 
