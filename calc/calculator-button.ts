@@ -88,6 +88,7 @@ export class ButtonCollection {
          *    it returns a localized word for error
          */
         try {
+            // @ts-expect-error `math` is imported in index.html
             const result = String(math.round(math.evaluate(DOMAccessor.getExpression().textContent as string), 10))
             if (DOMAccessor.getExpressionText.toString().search('/(<=|<|=>|>)+/') >= 0) {
                 DOMAccessor.setResult(String(Boolean(result)))

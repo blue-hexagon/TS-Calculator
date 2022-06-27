@@ -69,7 +69,7 @@ export default class InputController {
                     const button = document.querySelector(handle.xdata)
                     /** Set textContent of buttons */
                     button!.innerHTML = handle.display
-                    console.warn('xdata:', handle.xdata, document.querySelector(handle.xdata))
+                    console.debug('xdata:', handle.xdata, document.querySelector(handle.xdata))
                     /** Add click eventlisteners */
                     button!.addEventListener(
                         'click',

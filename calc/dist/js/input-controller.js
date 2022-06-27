@@ -25,7 +25,7 @@ var InputController = (function () {
                 if (handle !== undefined && handle !== null) {
                     var button = document.querySelector(handle.xdata);
                     button.innerHTML = handle.display;
-                    console.warn('xdata:', handle.xdata, document.querySelector(handle.xdata));
+                    console.debug('xdata:', handle.xdata, document.querySelector(handle.xdata));
                     button.addEventListener('click', function () {
                         console.debug("Clicked: ".concat(handle.value));
                         InputController.inputSwitch(handle.value);
