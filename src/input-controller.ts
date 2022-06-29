@@ -1,5 +1,5 @@
-import flashAnimation from './animate.js'
-import { ButtonCollection, Button } from './calculator-button.js'
+import flashAnimation from './animate'
+import { ButtonCollection, Button } from './calculator-button'
 export default class InputController {
     public cursorPosition: number
 

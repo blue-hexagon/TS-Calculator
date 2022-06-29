@@ -1,4 +1,4 @@
-import DOMAccessor from './dom-accessor.js';
+import DOMAccessor from './dom-accessor';
 var ButtonColor = (function () {
     function ButtonColor() {
     }

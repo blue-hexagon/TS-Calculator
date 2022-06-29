@@ -6,7 +6,7 @@
 * Table with information about buttons and shortcuts rendered on bottom of page.
 * Math parsing is done with [`mathjs`](https://www.npmjs.com/package/mathjs).
 
-![Screenshot of the calculator](screenshot01.png)
+![Screenshot of the calculator](calc.gif)
 
 ## Authors
 - **Manjana** - [manjana](https://github.com/blue-hexagon)

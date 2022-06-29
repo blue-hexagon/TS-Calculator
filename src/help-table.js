@@ -1,4 +1,4 @@
-import InputController from './input-controller.js';
+import InputController from './input-controller';
 var HelpTable = (function () {
     function HelpTable() {
     }

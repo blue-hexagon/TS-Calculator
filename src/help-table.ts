@@ -1,4 +1,4 @@
-import InputController from './input-controller.js'
+import InputController from './input-controller'
 
 export default class HelpTable {
     public static populateHelpTableWithDOMElements(): void {

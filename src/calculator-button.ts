@@ -1,5 +1,5 @@
 /* eslint-disable max-classes-per-file */
-import DOMAccessor from './dom-accessor.js'
+import DOMAccessor from './dom-accessor'
 
 type ButtonInterface = {
     name: string

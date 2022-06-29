@@ -1,5 +1,5 @@
-import flashAnimation from './animate.js';
-import { ButtonCollection } from './calculator-button.js';
+import flashAnimation from './animate';
+import { ButtonCollection } from './calculator-button';
 var InputController = (function () {
     function InputController(cusorPosition) {
         if (cusorPosition === void 0) { cusorPosition = 0; }
